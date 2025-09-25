@@ -6,13 +6,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WSPPolska_Tools;
 using Excel = Microsoft.Office.Interop.Excel;
-using System.Globalization;
+
 
 
 
@@ -28,8 +30,6 @@ namespace WSPPolska_Tools
         private UIDocument uidoc;
         string disciplineRepl = "";
         int disciplineReplInd;
-        private ExternalEvent deleteEvent;
-        private DeleteElementsHandler deleteHandler;
 
         Dictionary<string, List<double>> allNewLocations = new Dictionary<string, List<double>>();
         public GeolocationForm(ExternalCommandData commandData)
@@ -136,30 +136,6 @@ namespace WSPPolska_Tools
             System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
             MessageBox.Show("Data Exported");
-            //try
-            //{
-            //    // Prompt user to select elements
-            //    ICollection<ElementId> selectedIds = uidoc.Selection.GetElementIds();
-
-            //    if (selectedIds.Count == 0)
-            //    {
-            //        TaskDialog.Show("Selection", "Please select one or more elements in the Revit UI before running the command.");
-            //        return;
-            //    }
-
-            //    // Access the selected elements
-            //    List<Element> selectedElements = selectedIds.Select(id => doc.GetElement(id)).ToList();
-
-            //    // Do something with the selected elements
-            //    TaskDialog.Show("Selected Count", $"You selected {selectedElements.Count} elements.");
-
-
-            //    return;
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message);
-            //}
 
         }
 
@@ -189,9 +165,11 @@ namespace WSPPolska_Tools
 
 
         public static class ElementToBeDeleted
-        {
-            public static List<ElementId> ElementIdsToDelete = new List<ElementId>();
-        }
+{
+    public static List<ElementId> ElementIdsToDelete = new List<ElementId>();
+    public static List<string[]> DeletedElementDetails = new List<string[]>();
+}
+
 
         private void ImportLocations_Click(object sender, EventArgs e)
         {
@@ -233,57 +211,27 @@ namespace WSPPolska_Tools
             if (excelApp != null) System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
             MessageBox.Show("Data Exported");
 
-
-            ProjectLocationSet allExLocations = doc.ProjectLocations;
-            List<ProjectLocation> locToDelete = new List<ProjectLocation>();
-            List<ProjectLocation> locToCorrect = new List<ProjectLocation>();
-            foreach (ProjectLocation exLocation in allExLocations)
+            ImportLocationsHandler importHandler = new ImportLocationsHandler
             {
-                if (!allNewLocations.ContainsKey(exLocation.Name))
-                { 
-                    locToDelete.Add(exLocation);
-                    continue;
-                }
-                else
-                {
-                    locToCorrect.Add(exLocation);
-                }
-            }
-            List<ElementId> idsToDel = new List<ElementId>();
-            foreach (ProjectLocation dexLocation in locToDelete)
-            {
-                Transform prTransf= dexLocation.GetTotalTransform();
-                double NS = prTransf.Origin.X * 0.3048;
-                double EW = prTransf.Origin.Y * 0.3048;
-                double Z = prTransf.Origin.Z * 0.3048;
-                XYZ modelVec = prTransf.BasisX;
-                XYZ northVec = new XYZ(1, 0, 0);// East direction as reference
-                XYZ planeVec = new XYZ(0, 0, 1);// Plane reference
-                double angleToNorth = 2 * Math.PI - northVec.AngleOnPlaneTo(modelVec, planeVec);
-                double angleDegrees = angleToNorth * (180 / Math.PI);
-                PositionsDataGrid.Rows.Add("DELETED", dexLocation.Name, Math.Round(EW, 3), Math.Round(NS, 3), Math.Round(Z, 3), Math.Round(angleDegrees, 3));
-                idsToDel.Add(dexLocation.Id);
-            }
-            ElementToBeDeleted.ElementIdsToDelete = idsToDel;
+                AllNewLocations = allNewLocations,
+                CommandData = _commandData
+            };
+
+            ExternalEvent importEvent = ExternalEvent.Create(importHandler);
+            importEvent.Raise(); // This safely runs the transaction inside Revit
 
 
-            deleteHandler = new DeleteElementsHandler();
-            deleteEvent = ExternalEvent.Create(deleteHandler);
-            deleteEvent.Raise(); // This safely triggers the deletion inside Revit's API context
+            //foreach (ProjectLocation exLocation in locToCorrect)
+            //{
+            //    double NS = allNewLocations[exLocation.Name][0] / 0.3048;
+            //    double EW = allNewLocations[exLocation.Name][1] / 0.3048;
+            //    double EL = allNewLocations[exLocation.Name][2] / 0.3048;
+            //    double angleToNorth = allNewLocations[exLocation.Name][3];
+            //    var newPosition = new ProjectPosition(NS, EW , EL , -angleToNorth * (Math.PI / 180));
+            //    exLocation.SetProjectPosition(basePointPos, newPosition);
 
 
-
-            foreach (ProjectLocation exLocation in locToCorrect)
-            {
-                double NS = allNewLocations[exLocation.Name][0] / 0.3048;
-                double EW = allNewLocations[exLocation.Name][1] / 0.3048;
-                double EL = allNewLocations[exLocation.Name][2] / 0.3048;
-                double angleToNorth = allNewLocations[exLocation.Name][3];
-                var newPosition = new ProjectPosition(NS, EW , EL , -angleToNorth * (Math.PI / 180));
-                exLocation.SetProjectPosition(basePointPos, newPosition);
-
-
-            }
+            //}
 
             
         }
