@@ -17,9 +17,10 @@
         /// <param name="application"></param>
         /// <returns></returns>
         /// <exception cref="System.NotImplementedException"></exception>
+        public static ExternalEvent deleteEvent { get; set; }
+        public static DeleteElementsHandler deleteHandler { get; set; }
         public Result OnStartup(UIControlledApplication application)
         {
-
             string tabName = "WSP Polska Tools";
             application.CreateRibbonTab(tabName);
             
@@ -76,6 +77,9 @@
                 ToolTip = "Exporting and Importing Geolocation data to/from Excel"
             };
             PushButton GeoLocationButton = geoLocationPanel.AddItem(GeoLocationData) as PushButton;
+
+            deleteHandler = new DeleteElementsHandler();
+            deleteEvent = ExternalEvent.Create(deleteHandler);
 
             return Result.Succeeded;
         }

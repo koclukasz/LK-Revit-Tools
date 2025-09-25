@@ -30,17 +30,18 @@
         {
             this.ExportData = new System.Windows.Forms.Button();
             this.PositionsDataGrid = new System.Windows.Forms.DataGridView();
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
-            this.SetNaming = new System.Windows.Forms.Button();
-            this.openCoordinatesExcel = new System.Windows.Forms.OpenFileDialog();
-            this.ImportLocations = new System.Windows.Forms.Button();
-            this.OpenForImport = new System.Windows.Forms.OpenFileDialog();
             this.ModelName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LocationName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Latitude = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Longitde = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EL = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Ang = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
+            this.SetNaming = new System.Windows.Forms.Button();
+            this.openCoordinatesExcel = new System.Windows.Forms.OpenFileDialog();
+            this.ImportLocations = new System.Windows.Forms.Button();
+            this.OpenForImport = new System.Windows.Forms.OpenFileDialog();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.PositionsDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -72,6 +73,36 @@
             this.PositionsDataGrid.Size = new System.Drawing.Size(576, 199);
             this.PositionsDataGrid.TabIndex = 1;
             this.PositionsDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.PositionsDataGrid_CellContentClick);
+            // 
+            // ModelName
+            // 
+            this.ModelName.HeaderText = "Model Name";
+            this.ModelName.Name = "ModelName";
+            // 
+            // LocationName
+            // 
+            this.LocationName.HeaderText = "LocationName";
+            this.LocationName.Name = "LocationName";
+            // 
+            // Latitude
+            // 
+            this.Latitude.HeaderText = "Latitude";
+            this.Latitude.Name = "Latitude";
+            // 
+            // Longitde
+            // 
+            this.Longitde.HeaderText = "Longitde";
+            this.Longitde.Name = "Longitde";
+            // 
+            // EL
+            // 
+            this.EL.HeaderText = "Elevation";
+            this.EL.Name = "EL";
+            // 
+            // Ang
+            // 
+            this.Ang.HeaderText = "Angle ToNorth";
+            this.Ang.Name = "Ang";
             // 
             // checkedListBox1
             // 
@@ -111,41 +142,19 @@
             // 
             this.OpenForImport.FileName = "OpenForImport";
             // 
-            // ModelName
+            // textBox1
             // 
-            this.ModelName.HeaderText = "Model Name";
-            this.ModelName.Name = "ModelName";
-            // 
-            // LocationName
-            // 
-            this.LocationName.HeaderText = "LocationName";
-            this.LocationName.Name = "LocationName";
-            // 
-            // Latitude
-            // 
-            this.Latitude.HeaderText = "Latitude";
-            this.Latitude.Name = "Latitude";
-            // 
-            // Longitde
-            // 
-            this.Longitde.HeaderText = "Longitde";
-            this.Longitde.Name = "Longitde";
-            // 
-            // EL
-            // 
-            this.EL.HeaderText = "Elevation";
-            this.EL.Name = "EL";
-            // 
-            // Ang
-            // 
-            this.Ang.HeaderText = "Angle ToNorth";
-            this.Ang.Name = "Ang";
+            this.textBox1.Location = new System.Drawing.Point(12, 65);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.TabIndex = 5;
             // 
             // GeolocationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(740, 320);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.ImportLocations);
             this.Controls.Add(this.SetNaming);
             this.Controls.Add(this.checkedListBox1);
@@ -155,6 +164,7 @@
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.PositionsDataGrid)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -173,5 +183,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Longitde;
         private System.Windows.Forms.DataGridViewTextBoxColumn EL;
         private System.Windows.Forms.DataGridViewTextBoxColumn Ang;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }

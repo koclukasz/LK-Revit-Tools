@@ -18,8 +18,12 @@ using System.Globalization;
 
 namespace WSPPolska_Tools
 {
+
+    
+
     [Autodesk.Revit.Attributes.Transaction(Autodesk.Revit.Attributes.TransactionMode.Manual)]
     [Autodesk.Revit.Attributes.Regeneration(Autodesk.Revit.Attributes.RegenerationOption.Manual)]
+    
     public partial class GeolocationForm : System.Windows.Forms.Form
     {
         private ExternalCommandData _commandData;
@@ -28,8 +32,7 @@ namespace WSPPolska_Tools
         private UIDocument uidoc;
         string disciplineRepl = "";
         int disciplineReplInd;
-        private ExternalEvent deleteEvent;
-        private DeleteElementsHandler deleteHandler;
+       
 
         Dictionary<string, List<double>> allNewLocations = new Dictionary<string, List<double>>();
         public GeolocationForm(ExternalCommandData commandData)
@@ -264,26 +267,31 @@ namespace WSPPolska_Tools
                 PositionsDataGrid.Rows.Add("DELETED", dexLocation.Name, Math.Round(EW, 3), Math.Round(NS, 3), Math.Round(Z, 3), Math.Round(angleDegrees, 3));
                 idsToDel.Add(dexLocation.Id);
             }
-            ElementToBeDeleted.ElementIdsToDelete = idsToDel;
+            //ElementToBeDeleted.ElementIdsToDelete = idsToDel;
 
-
-            deleteHandler = new DeleteElementsHandler();
-            deleteEvent = ExternalEvent.Create(deleteHandler);
-            deleteEvent.Raise(); // This safely triggers the deletion inside Revit's API context
-
-
-
-            foreach (ProjectLocation exLocation in locToCorrect)
-            {
-                double NS = allNewLocations[exLocation.Name][0] / 0.3048;
-                double EW = allNewLocations[exLocation.Name][1] / 0.3048;
-                double EL = allNewLocations[exLocation.Name][2] / 0.3048;
-                double angleToNorth = allNewLocations[exLocation.Name][3];
-                var newPosition = new ProjectPosition(NS, EW , EL , -angleToNorth * (Math.PI / 180));
-                exLocation.SetProjectPosition(basePointPos, newPosition);
-
-
+            foreach (ElementId elementId in idsToDel)
+            { 
+                List<ElementId> newlist = new List<ElementId>() { elementId};
+                Main.deleteHandler.elementIds = newlist;
+                Main.deleteEvent.Raise();
             }
+            //deleteHandler = new DeleteElementsHandler();
+            //deleteEvent = ExternalEvent.Create(deleteHandler);
+            //deleteEvent.Raise(); // This safely triggers the deletion inside Revit's API context
+
+
+
+            //foreach (ProjectLocation exLocation in locToCorrect)
+            //{
+            //    double NS = allNewLocations[exLocation.Name][0] / 0.3048;
+            //    double EW = allNewLocations[exLocation.Name][1] / 0.3048;
+            //    double EL = allNewLocations[exLocation.Name][2] / 0.3048;
+            //    double angleToNorth = allNewLocations[exLocation.Name][3];
+            //    var newPosition = new ProjectPosition(NS, EW , EL , -angleToNorth * (Math.PI / 180));
+            //    exLocation.SetProjectPosition(basePointPos, newPosition);
+
+
+            //}
 
             
         }
