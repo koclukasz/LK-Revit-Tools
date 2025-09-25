@@ -1,0 +1,15 @@
+C:\Users\PLLK00169\Desktop\WSPPolska_Tools\WSPPolska_Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.csprojAssemblyReference.cache
+C:\Users\PLLK00169\Desktop\WSPPolska_Tools\WSPPolska_Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.csproj.CoreCompileInputs.cache
+C:\Users\PLLK00169\Desktop\WSPPolska_Tools\WSPPolska_Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.dll
+C:\Users\PLLK00169\Desktop\WSPPolska_Tools\WSPPolska_Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.pdb
+C:\Users\PLLK00169\Desktop\WSPPolska_Tools\WSPPolska_Tools\WSPPolska_Tools.dll
+C:\Users\PLLK00169\Desktop\WSPPolska_Tools\WSPPolska_Tools\WSPPolska_Tools.pdb
+C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.csproj.AssemblyReference.cache
+C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.csproj.CoreCompileInputs.cache
+C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.dll
+C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.pdb
+C:\aaaLukasz\GitHub\LK-Revit-Tools\WSPPolska_Tools.dll
+C:\aaaLukasz\GitHub\LK-Revit-Tools\WSPPolska_Tools.pdb
+C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.csproj.GenerateResource.cache
+C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.GeolocationForm.resources
+C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.csproj.ResolveComReference.cache

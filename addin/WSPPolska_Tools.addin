@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<RevitAddIns>
+	<AddIn Type="Application">
+		<Name>WSP Polska Revit Tools</Name>
+		<Assembly>C:\ProgramData\Autodesk\Revit\Addins\2022\WSPPolska_Tools.dll</Assembly>
+		<AddInId>50C9A190-681D-4C75-8D90-3D385BCC675C</AddInId>
+		<FullClassName>WSPPolska_Tools.Main</FullClassName>
+		<VendorId>Lukasz Koc</VendorId>
+		<VendorDescription>Lukasz Koc Head of BIM</VendorDescription>
+	</AddIn>
+</RevitAddIns>

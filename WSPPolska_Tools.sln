@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36401.2 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WSPPolska_Tools", "src\WSPPolska_Tools\WSPPolska_Tools.csproj", "{C3DB084B-F731-4461-852D-C1BE22358168}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3409D4DC-469D-4066-8271-5697CB10E7FB}"
+	ProjectSection(SolutionItems) = preProject
+		addin\WSPPolska_Tools.addin = addin\WSPPolska_Tools.addin
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C3DB084B-F731-4461-852D-C1BE22358168}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3DB084B-F731-4461-852D-C1BE22358168}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3DB084B-F731-4461-852D-C1BE22358168}.Debug|x64.ActiveCfg = Debug|x64
+		{C3DB084B-F731-4461-852D-C1BE22358168}.Debug|x64.Build.0 = Debug|x64
+		{C3DB084B-F731-4461-852D-C1BE22358168}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3DB084B-F731-4461-852D-C1BE22358168}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3DB084B-F731-4461-852D-C1BE22358168}.Release|x64.ActiveCfg = Release|x64
+		{C3DB084B-F731-4461-852D-C1BE22358168}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {48EFADF9-E34C-415A-8094-709A13135FCC}
+	EndGlobalSection
+EndGlobal
