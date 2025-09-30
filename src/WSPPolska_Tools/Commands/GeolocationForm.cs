@@ -35,7 +35,7 @@ namespace WSPPolska_Tools
         string userName;
        
 
-        Dictionary<string, NewLocationData> allNewLocations = new Dictionary<string, NewLocationData>();
+        //Dictionary<string, NewLocationData> allNewLocations = new Dictionary<string, NewLocationData>();
         public GeolocationForm(ExternalCommandData commandData)
         {
             _commandData = commandData;
@@ -174,40 +174,50 @@ namespace WSPPolska_Tools
 
         string fileDiscName; 
 
-        private void SetNaming_Click(object sender, EventArgs e)
-        {
-            if (checkedListBox1.CheckedItems.Count == 1)
-            {
-                disciplineReplInd = checkedListBox1.CheckedIndices[0];
-                disciplineRepl = checkedListBox1.CheckedItems[0].ToString();
-                fileDiscName = doc.Title.Replace(disciplineRepl, "DISC");
 
-                try
+        private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            if (e.NewValue == CheckState.Checked)
+            {
+                // Uncheck all other items
+                for (int i = 0; i < checkedListBox1.Items.Count; i++)
                 {
-                    fileDiscName = fileDiscName.Replace(userName, "");
+                    if (i != e.Index)
+                    {
+                        checkedListBox1.SetItemChecked(i, false);
+                    }
                 }
-                catch 
-                { 
-                
-                }
-                StandardName.Text = fileDiscName;
             }
-            else
+            // Delay execution until after the check state is updated
+            this.BeginInvoke((MethodInvoker)delegate 
             {
-                MessageBox.Show("Check only one item to be replaced","Warning", MessageBoxButtons.OK);
-            }
-        }
+                if (checkedListBox1.CheckedItems.Count == 1)
+                {
+                    disciplineReplInd = checkedListBox1.CheckedIndices[0];
+                    disciplineRepl = checkedListBox1.CheckedItems[0].ToString();
+                    fileDiscName = doc.Title.Replace(disciplineRepl, "DISC");
 
-        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
+                    try
+                    {
+                        fileDiscName = fileDiscName.Replace(userName, "");
+                    }
+                    catch { }
 
+                    StandardName.Text = fileDiscName;
+                }
+                else if (checkedListBox1.CheckedItems.Count > 1)
+                {
+                    MessageBox.Show("Check only one item to be replaced", "Warning", MessageBoxButtons.OK);
+                }
+            });
         }
 
 
         private void ImportLocations_Click(object sender, EventArgs e)
         {
+            Dictionary<string, NewLocationData> allNewLocations = new Dictionary<string, NewLocationData>();
             BasePoint basePoint = BasePoint.GetProjectBasePoint(doc);
-            XYZ basePointPos = basePoint.SharedPosition;
+            XYZ basePointPos = basePoint.Position;
             //open File Dialog to import Excel
             DialogResult fileLoaded = OpenForImport.ShowDialog();
             if (fileLoaded != DialogResult.OK)
@@ -280,23 +290,31 @@ namespace WSPPolska_Tools
             foreach (ProjectLocation dexLocation in locToDelete)
             {
                 Transform prTransf= dexLocation.GetTotalTransform();
-                double NS = prTransf.Origin.X * 0.3048;
-                double EW = prTransf.Origin.Y * 0.3048;
-                double Z = prTransf.Origin.Z * 0.3048;
-                XYZ modelVec = prTransf.BasisX;
-                XYZ northVec = new XYZ(1, 0, 0);// East direction as reference
-                XYZ planeVec = new XYZ(0, 0, 1);// Plane reference
-                double angleToNorth = 2 * Math.PI - northVec.AngleOnPlaneTo(modelVec, planeVec);
-                double angleDegrees = angleToNorth * (180 / Math.PI);
-                PositionsDataGrid.Rows.Add("DELETED", dexLocation.Name, Math.Round(EW, 3), Math.Round(NS, 3), Math.Round(Z, 3), Math.Round(angleDegrees, 3));
+                //double NS = prTransf.Origin.X * 0.3048;
+                //double EW = prTransf.Origin.Y * 0.3048;
+                //double Z = prTransf.Origin.Z * 0.3048;
+                ProjectPosition projectPositionPoint = dexLocation.GetProjectPosition(basePointPos);
+                //double EW = (basePointPos.X + prTransf.Origin.X) * 0.3048;
+                //double NS = (basePointPos.Y + prTransf.Origin.Y) * 0.3048;
+                //double Z = (basePointPos.Z + prTransf.Origin.Z) * 0.3048;
+                //XYZ modelVec = prTransf.BasisX;
+                //XYZ northVec = new XYZ(1, 0, 0);// East direction as reference
+                //XYZ planeVec = new XYZ(0, 0, 1);// Plane reference
+                //double angleToNorth = northVec.AngleOnPlaneTo(modelVec, planeVec);
+                double angleDegrees = projectPositionPoint.Angle * (180 / Math.PI);
+                //PositionsDataGrid.Rows.Add("DELETED", dexLocation.Name, Math.Round(EW, 3), Math.Round(NS, 3), Math.Round(Z, 3), Math.Round(angleDegrees, 3));
+                PositionsDataGrid.Rows.Add("DELETED", dexLocation.Name, Math.Round(projectPositionPoint.EastWest * 0.3048, 3), Math.Round(projectPositionPoint.NorthSouth * 0.3048, 3), Math.Round(projectPositionPoint.Elevation * 0.3048, 3), Math.Round(angleDegrees, 3));
                 idsToDel.Add(dexLocation.Id);
+
             }
+
             //checking if current location shall be deleted 
             if (idsToDel.Contains(doc.ActiveProjectLocation.Id))
             {
                 Main.changeLocHandler.newLocation = allNewLocations.OrderBy(entry => entry.Key).First().Value.ElementId;
                 Main.changeLocEvent.Raise();
             }
+
 
             Main.deleteHandler.elementIds = idsToDel;
             Main.deleteEvent.Raise();
@@ -308,32 +326,20 @@ namespace WSPPolska_Tools
 
             foreach (KeyValuePair<string, NewLocationData> loc in allNewLocations)
             {
-                MessageBox.Show($"{loc.Key} id {loc.Value.ElementId.IntegerValue}");
+                //MessageBox.Show($"{loc.Key} id {loc.Value.ElementId.IntegerValue}");
+                if (loc.Value.ElementId.IntegerValue == -1)
+                {
+                    PositionsDataGrid.Rows.Add("NEW", loc.Key, Math.Round(loc.Value.EW, 3), Math.Round(loc.Value.NS, 3), Math.Round(loc.Value.EL, 3), Math.Round(loc.Value.Rot, 3));
+                }
+                else
+                { 
+                    PositionsDataGrid.Rows.Add("EDITED", loc.Key, Math.Round(loc.Value.EW, 3), Math.Round(loc.Value.NS, 3), Math.Round(loc.Value.EL, 3), Math.Round(loc.Value.Rot, 3));
+                }
+
             }
 
 
             MessageBox.Show("Locations updated");
-
-
-
-            //deleteHandler = new DeleteElementsHandler();
-            //deleteEvent = ExternalEvent.Create(deleteHandler);
-            //deleteEvent.Raise(); // This safely triggers the deletion inside Revit's API context
-
-
-
-            //foreach (ProjectLocation exLocation in locToCorrect)
-            //{
-            //    double NS = allNewLocations[exLocation.Name][0] / 0.3048;
-            //    double EW = allNewLocations[exLocation.Name][1] / 0.3048;
-            //    double EL = allNewLocations[exLocation.Name][2] / 0.3048;
-            //    double angleToNorth = allNewLocations[exLocation.Name][3];
-            //    var newPosition = new ProjectPosition(NS, EW , EL , -angleToNorth * (Math.PI / 180));
-            //    exLocation.SetProjectPosition(basePointPos, newPosition);
-
-
-            //}
-
             
         }
 

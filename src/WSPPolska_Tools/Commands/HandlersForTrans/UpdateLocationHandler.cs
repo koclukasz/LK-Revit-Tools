@@ -15,7 +15,7 @@ namespace WSPPolska_Tools
         {
             Document doc = app.ActiveUIDocument.Document;
             BasePoint basePoint = BasePoint.GetProjectBasePoint(doc);
-            XYZ basePointPos = basePoint.SharedPosition;
+            XYZ basePointPos = basePoint.Position;
             ProjectLocation activeLoc = doc.ActiveProjectLocation;
 
             try
@@ -25,11 +25,11 @@ namespace WSPPolska_Tools
                     tx.Start();
                     foreach (KeyValuePair<string, NewLocationData> newLoc in newLocationDic)
                     { 
-                        double NS = newLoc.Value.NS;
-                        double EW = newLoc.Value.EW;
-                        double EL = newLoc.Value.EL;
+                        double NS = newLoc.Value.NS / 0.3048;
+                        double EW = newLoc.Value.EW / 0.3048;
+                        double EL = newLoc.Value.EL / 0.3048;
                         double angleToNorth = newLoc.Value.Rot;
-                        var newPosition = new ProjectPosition(NS, EW, EL, -angleToNorth * (Math.PI / 180));
+                        var newPosition = new ProjectPosition(EW, NS, EL, -angleToNorth * (Math.PI / 180));
                         if (newLoc.Value.ElementId.IntegerValue == -1)
                         {
                             ProjectLocation newLocation = activeLoc.Duplicate(newLoc.Key);

@@ -28,7 +28,6 @@ namespace WSPPolska_Tools
             { 
 
             }
-
 }
         public string GetName()
         { 

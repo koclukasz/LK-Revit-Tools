@@ -33,7 +33,6 @@
 
             List<List<Element>> allElemsAtLevels = new List<List<Element>>();
 
-            int listIndex = 0;
             foreach (Level level in allLevels)
             {
                 List<Element> allElemsAtLevel;
@@ -112,7 +111,6 @@
             return null;
         }
 
-
             public List<Element> GetElementsAtLevel(string level, Document doc)
         {
             List<Element> viewWallForParam = new FilteredElementCollector(doc, doc.ActiveView.Id).OfCategory(BuiltInCategory.OST_Walls).WhereElementIsNotElementType().ToElements() as List<Element>;
@@ -122,7 +120,7 @@
 
             ParameterValueProvider provider = new ParameterValueProvider(paramId);
             FilterStringEquals evaluator = new FilterStringEquals();
-            FilterStringRule levelRule = new FilterStringRule(provider, evaluator, level, false);
+            FilterStringRule levelRule = new FilterStringRule(provider, evaluator, level);
             ElementParameterFilter levelFilter = new ElementParameterFilter(levelRule);
 
             ICollection<Element> viewWalls = new FilteredElementCollector(doc, doc.ActiveView.Id).OfCategory(BuiltInCategory.OST_Walls).WherePasses(levelFilter).ToElements();
