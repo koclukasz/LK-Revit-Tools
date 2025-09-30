@@ -17,7 +17,7 @@
     [Autodesk.Revit.Attributes.Regeneration(Autodesk.Revit.Attributes.RegenerationOption.Manual)]
 
 
-    public class VentParametersCommand : IExternalCommand
+    public class VentParametersCommand : IExternalCommand   
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {

@@ -4,6 +4,7 @@
     using Autodesk.Revit.UI;
     using System.Reflection;
     using System.Windows.Media.Imaging;
+    using Autodesk.Revit.DB;
 
     /// <summary>
     /// Plugin's main entry point
@@ -17,8 +18,21 @@
         /// <param name="application"></param>
         /// <returns></returns>
         /// <exception cref="System.NotImplementedException"></exception>
+        
+        
+        //Handlers For Transactions 
+        //DeleteHandler
         public static ExternalEvent deleteEvent { get; set; }
         public static DeleteElementsHandler deleteHandler { get; set; }
+        
+        //Change Active Location
+        public static ExternalEvent changeLocEvent { get; set; }
+        public static ChangeLocationHandler changeLocHandler { get; set; }
+
+        //Update Locations
+        public static ExternalEvent updateLocEvent { get; set; }
+        public static UpdateLocationHandler updateLocHandler { get; set; }
+
         public Result OnStartup(UIControlledApplication application)
         {
             string tabName = "WSP Polska Tools";
@@ -78,8 +92,21 @@
             };
             PushButton GeoLocationButton = geoLocationPanel.AddItem(GeoLocationData) as PushButton;
 
+            
+            //Transaction definition
+            //delete elements
             deleteHandler = new DeleteElementsHandler();
             deleteEvent = ExternalEvent.Create(deleteHandler);
+            //change Active Location  
+            changeLocHandler = new ChangeLocationHandler();
+            changeLocEvent = ExternalEvent.Create(changeLocHandler);
+            //update Locations
+            updateLocHandler = new UpdateLocationHandler();
+            updateLocEvent = ExternalEvent.Create(updateLocHandler);
+
+
+
+
 
             return Result.Succeeded;
         }

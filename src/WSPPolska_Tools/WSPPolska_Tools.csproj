@@ -82,7 +82,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\DeleteElements.cs" />
+    <Compile Include="Commands\HandlersForTrans\UpdateLocationHandler.cs" />
+    <Compile Include="Commands\HandlersForTrans\ChangeLocationHandler.cs" />
+    <Compile Include="Commands\HandlersForTrans\DeleteElementsHandler.cs" />
     <Compile Include="Commands\GeolocationFormCommand.cs" />
     <Compile Include="Commands\GeolocationForm.cs">
       <SubType>Form</SubType>
@@ -91,6 +93,7 @@
       <DependentUpon>GeolocationForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Commands\HCParametersCommand.cs" />
+    <Compile Include="Commands\Models\NewLocationData.cs" />
     <Compile Include="Commands\PlumbParametersCommand.cs" />
     <Compile Include="Commands\SplitElements.cs" />
     <Compile Include="Commands\CommonM.cs" />

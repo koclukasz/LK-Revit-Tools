@@ -7,27 +7,27 @@ using System.Collections.Generic;
 namespace WSPPolska_Tools
 {
     //[Autodesk.Revit.Attributes.Transaction(Autodesk.Revit.Attributes.TransactionMode.Manual)]
-    public class DeleteElementsHandler : IExternalEventHandler
+    public class ChangeLocationHandler : IExternalEventHandler
     {
-        public List<ElementId> elementIds { get; set; }
+        public ElementId newLocation { get; set; }
 
         public void Execute(UIApplication app)
         {
             Document doc = app.ActiveUIDocument.Document;
 
-            //try
-            //{
-            using (Transaction tx = new Transaction(doc, "Modify Elements"))
+            try
             {
-                tx.Start();
-                doc.Delete(elementIds);
-                tx.Commit();
+                using (Transaction tx = new Transaction(doc, "Change Location"))
+                {
+                    tx.Start();
+                    doc.ActiveProjectLocation = doc.GetElement(newLocation) as ProjectLocation;
+                    tx.Commit();
+                }
             }
-            //}
-            //catch (Exception ex)
-            //{ 
+            catch (Exception ex)
+            {
 
-            //}
+            }
 
         }
         public string GetName()

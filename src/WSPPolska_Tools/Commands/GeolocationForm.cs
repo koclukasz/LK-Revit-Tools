@@ -32,20 +32,21 @@ namespace WSPPolska_Tools
         private UIDocument uidoc;
         string disciplineRepl = "";
         int disciplineReplInd;
+        string userName;
        
 
-        Dictionary<string, List<double>> allNewLocations = new Dictionary<string, List<double>>();
+        Dictionary<string, NewLocationData> allNewLocations = new Dictionary<string, NewLocationData>();
         public GeolocationForm(ExternalCommandData commandData)
         {
             _commandData = commandData;
             uiapp = _commandData.Application;
             uidoc = uiapp.ActiveUIDocument;
             doc = uidoc.Document;
+            userName = $"_{uiapp.Application.Username}";
             InitializeComponent();
             try
             {
-
-                string[] splittedName = Regex.Split(doc.Title, @"[,; _-]+");
+                string[] splittedName = Regex.Split(doc.Title.Replace(userName,""), @"[,; _-]+");
                 foreach (string namePart in splittedName)
                 {
                     checkedListBox1.Items.Add(namePart);
@@ -92,7 +93,7 @@ namespace WSPPolska_Tools
                 string typeName = linkedModel.LookupParameter("Type").AsValueString();
                 //updated type name to remove Discipline
                 string toBeReplaced = Regex.Split(typeName, @"[,; _-]+")[disciplineReplInd];
-                string changedTypeName = typeName.Replace(toBeReplaced, "DISC");
+                string changedTypeName = typeName.Replace(toBeReplaced, "DISC").Replace(".rvt","");
                 string locationName = linkedModel.LookupParameter("Name").AsValueString();
                 double EW = (basePointPos.X + modelTransform.Origin.X)*0.3048;
                 double NS = (basePointPos.Y + modelTransform.Origin.Y) * 0.3048;
@@ -170,7 +171,8 @@ namespace WSPPolska_Tools
         {
 
         }
-        
+
+        string fileDiscName; 
 
         private void SetNaming_Click(object sender, EventArgs e)
         {
@@ -178,6 +180,17 @@ namespace WSPPolska_Tools
             {
                 disciplineReplInd = checkedListBox1.CheckedIndices[0];
                 disciplineRepl = checkedListBox1.CheckedItems[0].ToString();
+                fileDiscName = doc.Title.Replace(disciplineRepl, "DISC");
+
+                try
+                {
+                    fileDiscName = fileDiscName.Replace(userName, "");
+                }
+                catch 
+                { 
+                
+                }
+                StandardName.Text = fileDiscName;
             }
             else
             {
@@ -191,11 +204,6 @@ namespace WSPPolska_Tools
         }
 
 
-        public static class ElementToBeDeleted
-        {
-            public static List<ElementId> ElementIdsToDelete = new List<ElementId>();
-        }
-
         private void ImportLocations_Click(object sender, EventArgs e)
         {
             BasePoint basePoint = BasePoint.GetProjectBasePoint(doc);
@@ -208,25 +216,32 @@ namespace WSPPolska_Tools
                 return;
             }
             MessageBox.Show($"File {OpenForImport.SafeFileName} Loaded", "Success", MessageBoxButtons.OK);
-            
+            if (fileDiscName == null)
+            {
+                MessageBox.Show("Please select Field to be replaced");
+                return;
+            }
             
             Excel.Application excelApp = new Excel.Application();
             Excel.Workbook workbook = excelApp.Workbooks.Open(OpenForImport.FileName);
             Excel.Worksheet worksheet = workbook.Sheets[1];
             int lastRowNo = worksheet.UsedRange.Rows.Count;
 
+
             for (int i = 2; i < lastRowNo; i++)
             {
-                double val3 = Convert.ToDouble(worksheet.Cells[i, 3].Value ?? 0, CultureInfo.GetCultureInfo("pl-PL"));
-                double val4 = Convert.ToDouble(worksheet.Cells[i, 4].Value ?? 0, CultureInfo.GetCultureInfo("pl-PL"));
-                double val5 = Convert.ToDouble(worksheet.Cells[i, 5].Value ?? 0, CultureInfo.GetCultureInfo("pl-PL"));
-                double val6 = Convert.ToDouble(worksheet.Cells[i, 6].Value ?? 0, CultureInfo.GetCultureInfo("pl-PL"));
-                string key = worksheet.Cells[i, 2].Text;
-                if (!allNewLocations.ContainsKey(key))
-                {
-                    allNewLocations[key] = new List<double> { val3, val4, val5, val6 };
+                if (worksheet.Cells[i, 1].Text == fileDiscName)
+                { 
+                    double val3 = Convert.ToDouble(worksheet.Cells[i, 3].Value ?? 0, CultureInfo.GetCultureInfo("pl-PL"));
+                    double val4 = Convert.ToDouble(worksheet.Cells[i, 4].Value ?? 0, CultureInfo.GetCultureInfo("pl-PL"));
+                    double val5 = Convert.ToDouble(worksheet.Cells[i, 5].Value ?? 0, CultureInfo.GetCultureInfo("pl-PL"));
+                    double val6 = Convert.ToDouble(worksheet.Cells[i, 6].Value ?? 0, CultureInfo.GetCultureInfo("pl-PL"));
+                    string key = worksheet.Cells[i, 2].Text;
+                    if (!allNewLocations.ContainsKey(key))
+                    {
+                        allNewLocations[key] = new NewLocationData(new ElementId(-1), key, val3, val4, val5, val6 );
+                    }
                 }
-
             }
             //workbook?.Save();
             if (worksheet != null) System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheet);
@@ -234,22 +249,31 @@ namespace WSPPolska_Tools
             if (workbook != null) System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
             excelApp?.Quit();
             if (excelApp != null) System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
-            MessageBox.Show("Data Exported");
 
-
-            ProjectLocationSet allExLocations = doc.ProjectLocations;
-            List<ProjectLocation> locToDelete = new List<ProjectLocation>();
-            List<ProjectLocation> locToCorrect = new List<ProjectLocation>();
-            foreach (ProjectLocation exLocation in allExLocations)
+            if (allNewLocations.Count == 0)
             {
-                if (!allNewLocations.ContainsKey(exLocation.Name))
+                MessageBox.Show("No Locations For this File", "Warning", MessageBoxButtons.OK);
+                return;
+            }
+            else
+            { 
+                MessageBox.Show("Data Imported", "Success", MessageBoxButtons.OK);
+            }
+            ProjectLocationSet allRevLocations = doc.ProjectLocations;
+
+            List<ProjectLocation> locToDelete = new List<ProjectLocation>();
+            //Dictionary<string, ProjectLocation> locToCorrect = new Dictionary<string, ProjectLocation>();
+            foreach (ProjectLocation revLocation in allRevLocations)
+            {
+                if (!allNewLocations.ContainsKey(revLocation.Name))
                 { 
-                    locToDelete.Add(exLocation);
+                    locToDelete.Add(revLocation);
                     continue;
                 }
                 else
                 {
-                    locToCorrect.Add(exLocation);
+                    NewLocationData locElement = allNewLocations[revLocation.Name];
+                    locElement.ElementId = revLocation.Id;
                 }
             }
             List<ElementId> idsToDel = new List<ElementId>();
@@ -267,14 +291,31 @@ namespace WSPPolska_Tools
                 PositionsDataGrid.Rows.Add("DELETED", dexLocation.Name, Math.Round(EW, 3), Math.Round(NS, 3), Math.Round(Z, 3), Math.Round(angleDegrees, 3));
                 idsToDel.Add(dexLocation.Id);
             }
-            //ElementToBeDeleted.ElementIdsToDelete = idsToDel;
-
-            foreach (ElementId elementId in idsToDel)
-            { 
-                List<ElementId> newlist = new List<ElementId>() { elementId};
-                Main.deleteHandler.elementIds = newlist;
-                Main.deleteEvent.Raise();
+            //checking if current location shall be deleted 
+            if (idsToDel.Contains(doc.ActiveProjectLocation.Id))
+            {
+                Main.changeLocHandler.newLocation = allNewLocations.OrderBy(entry => entry.Key).First().Value.ElementId;
+                Main.changeLocEvent.Raise();
             }
+
+            Main.deleteHandler.elementIds = idsToDel;
+            Main.deleteEvent.Raise();
+
+            Main.updateLocHandler.newLocationDic = allNewLocations;
+            Main.updateLocEvent.Raise();
+
+
+
+            foreach (KeyValuePair<string, NewLocationData> loc in allNewLocations)
+            {
+                MessageBox.Show($"{loc.Key} id {loc.Value.ElementId.IntegerValue}");
+            }
+
+
+            MessageBox.Show("Locations updated");
+
+
+
             //deleteHandler = new DeleteElementsHandler();
             //deleteEvent = ExternalEvent.Create(deleteHandler);
             //deleteEvent.Raise(); // This safely triggers the deletion inside Revit's API context
@@ -294,6 +335,11 @@ namespace WSPPolska_Tools
             //}
 
             
+        }
+
+        private void StandardName_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
