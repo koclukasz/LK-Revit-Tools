@@ -138,6 +138,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /Y /D "$(TargetPath)" "C:\ProgramData\Autodesk\Revit\Addins\2022\"
+xcopy /Y "C:\aaaLukasz\GitHub\LK-Revit-Tools\addin\WSPPolska_Tools.addin" "C:\ProgramData\Autodesk\Revit\Addins\2022\"
 </PostBuildEvent>
   </PropertyGroup>
 </Project>
