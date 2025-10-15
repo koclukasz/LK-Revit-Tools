@@ -34,6 +34,10 @@
         public static ExternalEvent updateLocEvent { get; set; }
         public static UpdateLocationHandler updateLocHandler { get; set; }
 
+        //Update Locations
+        public static ExternalEvent exportLocEvent { get; set; }
+        public static ExportLocationsHandler exportLocHandler { get; set; }
+
         public Result OnStartup(UIControlledApplication application)
         {
             string tabName = "WSP Polska Tools";
@@ -96,6 +100,26 @@
             PushButton GeoLocationButton = geoLocationPanel.AddItem(GeoLocationData) as PushButton;
             GeoLocationButton.LargeImage = new BitmapImage(new Uri(Path.Combine(addinFolder, "res", "currentLocation32x32.png")));
 
+            var ExportLocationsData = new PushButtonData("Export Locations", "Export Locations", Assembly.GetExecutingAssembly().Location, "WSPPolska_Tools.ExportLocationsFormCommand")
+            {
+                ToolTipImage = new BitmapImage(new Uri(Path.Combine(addinFolder, "res", "WSP355x355.png"))),
+                ToolTip = " to IFC, NWC, DWFx with selected settings and file name"
+            };
+            PushButton ExportLocationButton = geoLocationPanel.AddItem(ExportLocationsData) as PushButton;
+            ExportLocationButton.LargeImage = new BitmapImage(new Uri(Path.Combine(addinFolder, "res", "locationShare32x32.png")));
+
+
+            //Geodata Panel inport
+            string equipmentExportPanelName = "Equipment Schedule";
+            RibbonPanel equipmentExportPanel = application.CreateRibbonPanel(tabName, equipmentExportPanelName);
+            var equipmentExportData = new PushButtonData("Export Equipment", "Export Equipment Numbers", Assembly.GetExecutingAssembly().Location, "WSPPolska_Tools.ExportEquipmentNuFormCommand")
+            {
+                ToolTipImage = new BitmapImage(new Uri(Path.Combine(addinFolder, "res", "WSP355x355.png"))),
+                ToolTip = "Exporting and Importing Equipment Numbers with Excel"
+            };
+
+            PushButton equipmentExportButton = equipmentExportPanel.AddItem(equipmentExportData) as PushButton;
+            equipmentExportButton.LargeImage = new BitmapImage(new Uri(Path.Combine(addinFolder, "res", "eq32x32.png")));
 
             //Transaction definition
             //delete elements
@@ -107,7 +131,9 @@
             //update Locations
             updateLocHandler = new UpdateLocationHandler();
             updateLocEvent = ExternalEvent.Create(updateLocHandler);
-
+            //update Locations
+            exportLocHandler = new ExportLocationsHandler();
+            exportLocEvent = ExternalEvent.Create(exportLocHandler);
 
 
 

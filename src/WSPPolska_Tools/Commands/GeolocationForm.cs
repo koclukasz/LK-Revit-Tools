@@ -1,18 +1,18 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
+using BIM.IFC.Export.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Excel = Microsoft.Office.Interop.Excel;
 using System.Globalization;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using Excel = Microsoft.Office.Interop.Excel;
 
 
 
@@ -26,6 +26,15 @@ namespace WSPPolska_Tools
     
     public partial class GeolocationForm : System.Windows.Forms.Form
     {
+        [DllImport("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        [DllImport("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+
+        private const int WM_NCLBUTTONDOWN = 0xA1;
+        private const int HTCAPTION = 0x2;
+
         private ExternalCommandData _commandData;
         private Document doc;
         private UIApplication uiapp;
@@ -38,6 +47,7 @@ namespace WSPPolska_Tools
         //Dictionary<string, NewLocationData> allNewLocations = new Dictionary<string, NewLocationData>();
         public GeolocationForm(ExternalCommandData commandData)
         {
+            this.MouseDown += GeolocationForm_MouseDown;
             _commandData = commandData;
             uiapp = _commandData.Application;
             uidoc = uiapp.ActiveUIDocument;
@@ -57,7 +67,15 @@ namespace WSPPolska_Tools
                 MessageBox.Show(ex.Message);
             }
         }
-        
+
+        private void GeolocationForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+            }
+        }
 
         private void ExportData_Click(object sender, EventArgs e)
         {
@@ -272,7 +290,6 @@ namespace WSPPolska_Tools
             ProjectLocationSet allRevLocations = doc.ProjectLocations;
 
             List<ProjectLocation> locToDelete = new List<ProjectLocation>();
-            //Dictionary<string, ProjectLocation> locToCorrect = new Dictionary<string, ProjectLocation>();
             foreach (ProjectLocation revLocation in allRevLocations)
             {
                 if (!allNewLocations.ContainsKey(revLocation.Name))
@@ -289,20 +306,8 @@ namespace WSPPolska_Tools
             List<ElementId> idsToDel = new List<ElementId>();
             foreach (ProjectLocation dexLocation in locToDelete)
             {
-                Transform prTransf= dexLocation.GetTotalTransform();
-                //double NS = prTransf.Origin.X * 0.3048;
-                //double EW = prTransf.Origin.Y * 0.3048;
-                //double Z = prTransf.Origin.Z * 0.3048;
                 ProjectPosition projectPositionPoint = dexLocation.GetProjectPosition(basePointPos);
-                //double EW = (basePointPos.X + prTransf.Origin.X) * 0.3048;
-                //double NS = (basePointPos.Y + prTransf.Origin.Y) * 0.3048;
-                //double Z = (basePointPos.Z + prTransf.Origin.Z) * 0.3048;
-                //XYZ modelVec = prTransf.BasisX;
-                //XYZ northVec = new XYZ(1, 0, 0);// East direction as reference
-                //XYZ planeVec = new XYZ(0, 0, 1);// Plane reference
-                //double angleToNorth = northVec.AngleOnPlaneTo(modelVec, planeVec);
                 double angleDegrees = projectPositionPoint.Angle * (180 / Math.PI);
-                //PositionsDataGrid.Rows.Add("DELETED", dexLocation.Name, Math.Round(EW, 3), Math.Round(NS, 3), Math.Round(Z, 3), Math.Round(angleDegrees, 3));
                 PositionsDataGrid.Rows.Add("DELETED", dexLocation.Name, Math.Round(projectPositionPoint.EastWest * 0.3048, 3), Math.Round(projectPositionPoint.NorthSouth * 0.3048, 3), Math.Round(projectPositionPoint.Elevation * 0.3048, 3), Math.Round(angleDegrees, 3));
                 idsToDel.Add(dexLocation.Id);
 
@@ -346,6 +351,54 @@ namespace WSPPolska_Tools
         private void StandardName_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+
+
+                //Type ifcAppType = typeof(IFCCommandOverrideApplication);
+                //PropertyInfo theDocProp = ifcAppType.GetProperty("TheDocument", BindingFlags.Static | BindingFlags.NonPublic);
+                //theDocProp?.SetValue(null, doc);
+
+
+
+                var ifcAppType = typeof(IFCCommandOverrideApplication);
+                var theDocProp = ifcAppType.GetProperty("TheDocument");
+                theDocProp.SetValue(null, doc);
+
+                // Load built-in and saved configurations
+                IFCExportConfigurationsMap configMap = new IFCExportConfigurationsMap();
+                configMap.AddBuiltInConfigurations();
+                configMap.AddSavedConfigurations();
+                IFCExportConfiguration selectedConfig;
+                foreach (IFCExportConfiguration config in configMap.Values)
+                {
+                    //MessageBox.Show(config.Name);
+                    if (config.Name.Contains("NEOM"))
+                    {
+                        selectedConfig = config;
+                    }
+                }
+
+                //try
+                //{
+                    //.IFCExport(doc, @"C:\aaaLukasz\Śmieci tymczasowe\Dubaj models\dsdsa.idc", selectedConfig.Name);
+                    //doc.Export(@"C:\aaaLukasz\Śmieci tymczasowe\Dubaj models\", "dsdsdsds", selectedConfig);
+                //}
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void buttonClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

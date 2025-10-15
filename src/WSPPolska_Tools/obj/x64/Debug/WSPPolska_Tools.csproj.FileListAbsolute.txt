@@ -13,3 +13,7 @@ C:\aaaLukasz\GitHub\LK-Revit-Tools\WSPPolska_Tools.pdb
 C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.csproj.GenerateResource.cache
 C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.GeolocationForm.resources
 C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.csproj.ResolveComReference.cache
+C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolsk.324DCED6.Up2Date
+C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.Commands.ExportLocationsForm.resources
+C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.Properties.Resources.resources
+C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.ExportEquipmentNuForm.resources

@@ -61,6 +61,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autodesk.IFC.Export.UI, Version=22.6.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ext\Autodesk.IFC.Export.UI.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="RevitAPI">
       <HintPath>..\..\ext\RevitAPI.dll</HintPath>
@@ -82,6 +86,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\ExportLocationsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Commands\ExportLocationsForm.Designer.cs">
+      <DependentUpon>ExportLocationsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Commands\ExportLocationsFormCommand.cs" />
+    <Compile Include="Commands\ExportEquipmentNuFormCommand.cs" />
+    <Compile Include="Commands\ExportEquipmentNuForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Commands\ExportEquipmentNuForm.Designer.cs">
+      <DependentUpon>ExportEquipmentNuForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Commands\HandlersForTrans\ExportLocationsHandler.cs" />
     <Compile Include="Commands\HandlersForTrans\UpdateLocationHandler.cs" />
     <Compile Include="Commands\HandlersForTrans\ChangeLocationHandler.cs" />
     <Compile Include="Commands\HandlersForTrans\DeleteElementsHandler.cs" />
@@ -93,6 +112,7 @@
       <DependentUpon>GeolocationForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Commands\HCParametersCommand.cs" />
+    <Compile Include="Commands\Models\ChangeNameToStandard.cs" />
     <Compile Include="Commands\Models\NewLocationData.cs" />
     <Compile Include="Commands\PlumbParametersCommand.cs" />
     <Compile Include="Commands\SplitElements.cs" />
@@ -100,10 +120,25 @@
     <Compile Include="Commands\VentParametersCommand.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Commands\ExportEquipmentNuForm.resx">
+      <DependentUpon>ExportEquipmentNuForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Commands\ExportLocationsForm.resx">
+      <DependentUpon>ExportLocationsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Commands\GeolocationForm.resx">
       <DependentUpon>GeolocationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -137,8 +172,13 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y /D "$(TargetPath)" "C:\ProgramData\Autodesk\Revit\Addins\2022\"
+    <PostBuildEvent>mkdir "C:\ProgramData\Autodesk\Revit\Addins\2022\WSPPolska_Tools\WSPPolska_Tools"
+
+xcopy /Y /D "$(TargetPath)" "C:\ProgramData\Autodesk\Revit\Addins\2022\WSPPolska_Tools"
 xcopy /Y "C:\aaaLukasz\GitHub\LK-Revit-Tools\addin\WSPPolska_Tools.addin" "C:\ProgramData\Autodesk\Revit\Addins\2022\"
+
+
+xcopy /Y /E /I "$(ProjectDir)res\*.*" "C:\ProgramData\Autodesk\Revit\Addins\2022\WSPPolska_Tools\res\"
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

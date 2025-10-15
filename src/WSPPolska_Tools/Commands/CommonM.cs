@@ -8,6 +8,7 @@
     using Autodesk.Revit.DB.Mechanical;
     using System.Diagnostics;
     using System;
+    using Excel = Microsoft.Office.Interop.Excel;
 
     /// <summary>
     /// Command to Be executed when button clicked
@@ -17,7 +18,7 @@
     [Autodesk.Revit.Attributes.Regeneration(Autodesk.Revit.Attributes.RegenerationOption.Manual)]
 
 
-    public class CommonM 
+    public class CommonM
     {
         public static string GetSpaceForElement(Element element)
         {
@@ -71,5 +72,47 @@
                 sb.Append(error);
             return sb;
         }
+    }
+    public class IntView3D
+    {
+        public View3D viewInt { get; private set; }
+
+        public IntView3D(View3D view)
+        {
+            viewInt = view;
+        }
+        public override string ToString()
+        {
+            return viewInt.Name;
+        }
+    }
+    public static class ExcelHelper
+    {
+        /// <summary>
+        /// Gets the last non-empty row in the specified Excel worksheet.
+        /// </summary>
+        /// <param name="sheet">The Excel worksheet to inspect.</param>
+        /// <returns>The row number of the last non-empty row, or 0 if none found.</returns>
+        public static int GetLastNonEmptyRow(Excel.Worksheet sheet)
+        {
+            if (sheet == null)
+                throw new ArgumentNullException(nameof(sheet));
+
+            int lastRow = sheet.UsedRange.Rows.Count;
+
+            for (int row = lastRow; row >= 1; row--)
+            {
+                Excel.Range cell = sheet.Cells[row, 2] as Excel.Range; // Column B is index 2
+
+                if (cell != null && cell.Value2 != null && !string.IsNullOrWhiteSpace(cell.Value2.ToString()))
+                {
+                    return row;
+                }
+            }
+
+            return 0;
+
+        }
+
     }
 }
