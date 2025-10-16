@@ -29,27 +29,13 @@ namespace WSPPolska_Tools
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
 
-            OpenFileDialog openDialog = new OpenFileDialog
-            {
-                Title = "Select an Excel File",
-                Filter = "Excel Files|*.xls;*.xlsx"
-            };
-
-            DialogResult result = openDialog.ShowDialog();
-
-            if (result != DialogResult.OK)
-            {
-                TaskDialog.Show("Warning", "No Excel file selected. Command will terminate.");
-                return Result.Cancelled;
-            }
 
 
-            string selectedFile = openDialog.FileName;
+            //ExportEquipmentNuForm exEqform = new ExportEquipmentNuForm(selectedFile, commandData);
+            //Application.Run(exEqform);
 
-            ExportEquipmentNuForm exEqform = new ExportEquipmentNuForm(selectedFile, commandData);
-            Application.Run(exEqform);
-
-            //form.Show(new RevitExportEqWindowHandle(commandData.Application.MainWindowHandle)); // Modal window
+            var form = new ExportEquipmentNuForm(commandData);
+            form.Show(new RevitExportLocWindowHandle(commandData.Application.MainWindowHandle)); // Modal window
 
             return Result.Succeeded;
         }

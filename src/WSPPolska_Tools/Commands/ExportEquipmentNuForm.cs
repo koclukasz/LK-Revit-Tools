@@ -38,27 +38,38 @@ namespace WSPPolska_Tools
         private UIApplication uiapp;
         private UIDocument uidoc;
 
-        public ExportEquipmentNuForm(string excelFilePath, ExternalCommandData commandData)
+        public ExportEquipmentNuForm(ExternalCommandData commandData)
         {
-            this.MouseDown += ExportEquipmentNuForm_MouseDown;
             InitializeComponent();
-            selectedExcelFilePath = excelFilePath;
+            this.MouseDown += ExportEquipmentNuForm_MouseDown;
+            OpenFileDialog openDialog = new OpenFileDialog
+            {
+                Title = "Select an Excel File",
+                Filter = "Excel Files|*.xls;*.xlsx"
+            };
+            DialogResult result = openDialog.ShowDialog();
+            if (result != DialogResult.OK)
+            {
+                TaskDialog.Show("Warning", "No Excel file selected. Command will terminate.");
+            }
             _commandData = commandData;
             uiapp = _commandData.Application;
             uidoc = uiapp.ActiveUIDocument;
             doc = uidoc.Document;
-            MessageBox.Show($"File {Path.GetFileName(selectedExcelFilePath)} Loaded", "Success", MessageBoxButtons.OK);
-
-            excelApp = new Excel.Application();
-            workbook = excelApp.Workbooks.Open(selectedExcelFilePath);
-            selectedParam.Items.Add("Mark");
-            selectedParam.Items.Add("WSP_Number");
-            selectedParam.Items.Add("Custom");
-            foreach (Excel.Worksheet sheet in workbook.Sheets)
+            if (result == DialogResult.OK)
             {
-                tabList.Items.Add($"{sheet.Index}_{sheet.Name}");
+                excelApp = new Excel.Application();
+                string selectedExcelFilePath = openDialog.FileName;
+                MessageBox.Show($"File {Path.GetFileName(selectedExcelFilePath)} Loaded", "Success", MessageBoxButtons.OK);
+                workbook = excelApp.Workbooks.Open(selectedExcelFilePath);
+                selectedParam.Items.Add("Mark");
+                selectedParam.Items.Add("WSP_Number");
+                selectedParam.Items.Add("Custom");
+                foreach (Excel.Worksheet sheet in workbook.Sheets)
+                {
+                    tabList.Items.Add($"{sheet.Index}_{sheet.Name}");
+                }
             }
-
         }
 
 
@@ -81,13 +92,14 @@ namespace WSPPolska_Tools
                 MessageBox.Show("Please select Parameter");
                 return;
             }
-            if (numberingScheme.Text == "" || Regex.IsMatch(numberingScheme.Text, @"[^LN_.]"))
+            if (numberingScheme.Text == "" || Regex.IsMatch(numberingScheme.Text, @"[^LN_+.]"))
             {
                 MessageBox.Show("Please provide correct scheme for numbering. Scheme might contains incorrect parameters. Other than LN_. are not allowed.");
                 return;
             }
             string userPattern = numberingScheme.Text;
-            string regexPat = userPattern.Replace(".", "\\.").Replace("_", "_").Replace("L", "[A-Z]").Replace("N", "\\d") + "$";
+            string regexPat = userPattern.Replace("L+", "[A-Z]+").Replace("N+", "\\d+").Replace("L", "[A-Z]").Replace("N", "\\d") + "$";
+            regexPat = "^" + regexPat + "$";
 
             Worksheet selectedSheet = workbook.Sheets[selectedIndex + 1];
             int lastRowNo = ExcelHelper.GetLastNonEmptyRow(selectedSheet);
@@ -125,8 +137,6 @@ namespace WSPPolska_Tools
                 {
                 }
             }
-            string message = string.Join(Environment.NewLine, excelItemsList);
-            string messageRv = string.Join(Environment.NewLine, itemList);
             // checking if items from Excel exists in the model
             foreach (string el in excelItemsList)
             {
@@ -185,7 +195,9 @@ namespace WSPPolska_Tools
                 if (!existingIds.Contains(el.Id.IntegerValue))
                 {
                     incorrectNamingSheet.Cells[incorrectIndex, 1].Value = tabList.SelectedItem as string;
-                    incorrectNamingSheet.Cells[incorrectIndex, 2].Value = el.LookupParameter(paramNumb).AsString(); ;
+                    incorrectNamingSheet.Cells[incorrectIndex, 2].Value = el.LookupParameter(paramNumb).AsString();
+                    Range cell = incorrectNamingSheet.Cells[incorrectIndex, 2];
+                    cell.Interior.ColorIndex = Excel.XlColorIndex.xlColorIndexNone;
                     incorrectNamingSheet.Cells[incorrectIndex, 3].Value = el.Id.IntegerValue;
                     incorrectIndex++;
                 }
