@@ -50,7 +50,7 @@ namespace WSPPolska_Tools
             DialogResult result = openDialog.ShowDialog();
             if (result != DialogResult.OK)
             {
-                TaskDialog.Show("Warning", "No Excel file selected. Command will terminate.");
+                TaskDialog.Show("Warning", "No Excel file selected. Command shall be terminated.");
             }
             _commandData = commandData;
             uiapp = _commandData.Application;

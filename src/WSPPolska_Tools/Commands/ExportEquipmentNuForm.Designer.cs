@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExportEquipmentNuForm));
             this.tabList = new System.Windows.Forms.ComboBox();
             this.ExportImpEquip = new System.Windows.Forms.Button();
             this.buttonClose = new System.Windows.Forms.Button();
@@ -35,6 +36,8 @@
             this.customParameter = new System.Windows.Forms.TextBox();
             this.numberingScheme = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabList
@@ -118,12 +121,23 @@
             this.label1.Text = "Please provide expression for Equipment Number\nFor each letter use \"L\" for digit " +
     "use \"N\"\n LLL_LNN_NNN will be correct for MEC_L00_001";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(75, 35);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 15;
+            this.pictureBox1.TabStop = false;
+            // 
             // ExportEquipmentNuForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(566, 214);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.numberingScheme);
             this.Controls.Add(this.customParameter);
@@ -134,6 +148,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "ExportEquipmentNuForm";
             this.Text = "Equipment No Verification";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -148,5 +163,6 @@
         private System.Windows.Forms.TextBox customParameter;
         private System.Windows.Forms.TextBox numberingScheme;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
