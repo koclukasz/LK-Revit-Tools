@@ -98,7 +98,7 @@
             if (sheet == null)
                 throw new ArgumentNullException(nameof(sheet));
 
-            int lastRow = sheet.UsedRange.Rows.Count;
+            int lastRow = 10000;
 
             for (int row = lastRow; row >= 1; row--)
             {

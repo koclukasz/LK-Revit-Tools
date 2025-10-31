@@ -11,11 +11,11 @@ using WSPPolska_Tools.Commands;
 namespace WSPPolska_Tools
 {
     
-    public class RevitExportEqWindowHandle : IWin32Window
+    public class RevitCreateSpheresWindowHandle : IWin32Window
     {
         private readonly IntPtr _handle;
 
-        public RevitExportEqWindowHandle(IntPtr handle)
+        public RevitCreateSpheresWindowHandle(IntPtr handle)
         {
             _handle = handle;
         }
@@ -24,7 +24,7 @@ namespace WSPPolska_Tools
     }
     [Autodesk.Revit.Attributes.Transaction(Autodesk.Revit.Attributes.TransactionMode.Manual)]
     [Autodesk.Revit.Attributes.Regeneration(Autodesk.Revit.Attributes.RegenerationOption.Manual)]
-    public class ExportEquipmentNuFormCommand : IExternalCommand
+    public class CreateCoordinationSpheresCommand : IExternalCommand
      {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
@@ -34,8 +34,8 @@ namespace WSPPolska_Tools
             //ExportEquipmentNuForm exEqform = new ExportEquipmentNuForm(selectedFile, commandData);
             //Application.Run(exEqform);
 
-            var form = new ExportEquipmentNuForm(commandData);
-            form.Show(new RevitExportEqWindowHandle(commandData.Application.MainWindowHandle)); // Modal window
+            var form = new CreateCoordinationSpheres(commandData);
+            form.Show(new RevitCreateSpheresWindowHandle(commandData.Application.MainWindowHandle)); // Modal window
 
             return Result.Succeeded;
         }

@@ -17,3 +17,4 @@ C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolsk.32
 C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.Commands.ExportLocationsForm.resources
 C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.Properties.Resources.resources
 C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.ExportEquipmentNuForm.resources
+C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.CreateCoordinationSpheres.resources

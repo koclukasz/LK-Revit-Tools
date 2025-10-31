@@ -86,6 +86,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CreateCoordinationSpheresCommand.cs" />
     <Compile Include="Commands\ExportLocationsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -100,9 +101,17 @@
     <Compile Include="Commands\ExportEquipmentNuForm.Designer.cs">
       <DependentUpon>ExportEquipmentNuForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Commands\CreateCoordinationSpheres.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Commands\CreateCoordinationSpheres.Designer.cs">
+      <DependentUpon>CreateCoordinationSpheres.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Commands\HandlersForTrans\ChangeLocationHandler.cs" />
+    <Compile Include="Commands\HandlersForTrans\CreateWorksetHandler.cs" />
     <Compile Include="Commands\HandlersForTrans\ExportLocationsHandler.cs" />
     <Compile Include="Commands\HandlersForTrans\UpdateLocationHandler.cs" />
-    <Compile Include="Commands\HandlersForTrans\ChangeLocationHandler.cs" />
+    <Compile Include="Commands\HandlersForTrans\CreateSphereHandler.cs" />
     <Compile Include="Commands\HandlersForTrans\DeleteElementsHandler.cs" />
     <Compile Include="Commands\GeolocationFormCommand.cs" />
     <Compile Include="Commands\GeolocationForm.cs">
@@ -132,6 +141,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Commands\ExportLocationsForm.resx">
       <DependentUpon>ExportLocationsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Commands\CreateCoordinationSpheres.resx">
+      <DependentUpon>CreateCoordinationSpheres.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Commands\GeolocationForm.resx">
       <DependentUpon>GeolocationForm.cs</DependentUpon>

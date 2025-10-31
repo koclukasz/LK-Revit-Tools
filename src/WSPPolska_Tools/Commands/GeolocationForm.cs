@@ -353,48 +353,7 @@ namespace WSPPolska_Tools
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-            try
-            {
-
-
-                //Type ifcAppType = typeof(IFCCommandOverrideApplication);
-                //PropertyInfo theDocProp = ifcAppType.GetProperty("TheDocument", BindingFlags.Static | BindingFlags.NonPublic);
-                //theDocProp?.SetValue(null, doc);
-
-
-
-                var ifcAppType = typeof(IFCCommandOverrideApplication);
-                var theDocProp = ifcAppType.GetProperty("TheDocument");
-                theDocProp.SetValue(null, doc);
-
-                // Load built-in and saved configurations
-                IFCExportConfigurationsMap configMap = new IFCExportConfigurationsMap();
-                configMap.AddBuiltInConfigurations();
-                configMap.AddSavedConfigurations();
-                IFCExportConfiguration selectedConfig;
-                foreach (IFCExportConfiguration config in configMap.Values)
-                {
-                    //MessageBox.Show(config.Name);
-                    if (config.Name.Contains("NEOM"))
-                    {
-                        selectedConfig = config;
-                    }
-                }
-
-                //try
-                //{
-                    //.IFCExport(doc, @"C:\aaaLukasz\Śmieci tymczasowe\Dubaj models\dsdsa.idc", selectedConfig.Name);
-                    //doc.Export(@"C:\aaaLukasz\Śmieci tymczasowe\Dubaj models\", "dsdsdsds", selectedConfig);
-                //}
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
+        
 
         private void buttonClose_Click(object sender, EventArgs e)
         {

@@ -38,6 +38,14 @@
         public static ExternalEvent exportLocEvent { get; set; }
         public static ExportLocationsHandler exportLocHandler { get; set; }
 
+        //Create Spheres
+        public static ExternalEvent createSpheresEvent { get; set; }
+        public static CreateSphereHandler createSpheresHandler { get; set; }
+
+        //Create Spheres
+        public static ExternalEvent createWorksetEvent { get; set; }
+        public static CreateWorksetHandler createWorksetHandler { get; set; }
+
         public Result OnStartup(UIControlledApplication application)
         {
             string tabName = "WSP Polska Tools";
@@ -109,7 +117,7 @@
             ExportLocationButton.LargeImage = new BitmapImage(new Uri(Path.Combine(addinFolder, "res", "locationShare32x32.png")));
 
 
-            //Geodata Panel inport
+            //Mechanical Equipment Panel inport
             string equipmentExportPanelName = "Equipment Schedule";
             RibbonPanel equipmentExportPanel = application.CreateRibbonPanel(tabName, equipmentExportPanelName);
             var equipmentExportData = new PushButtonData("Export Equipment", "Export Equipment Numbers", Assembly.GetExecutingAssembly().Location, "WSPPolska_Tools.ExportEquipmentNuFormCommand")
@@ -120,6 +128,19 @@
 
             PushButton equipmentExportButton = equipmentExportPanel.AddItem(equipmentExportData) as PushButton;
             equipmentExportButton.LargeImage = new BitmapImage(new Uri(Path.Combine(addinFolder, "res", "eq32x32.png")));
+
+            //Coordination Panel inport
+            string coordinationPanelName = "Coordination Panel";
+            RibbonPanel coordinationPanel = application.CreateRibbonPanel(tabName, coordinationPanelName);
+            var coordinationSpheresData = new PushButtonData("Create Spheres", "Create Coordination Spheres", Assembly.GetExecutingAssembly().Location, "WSPPolska_Tools.CreateCoordinationSpheresCommand")
+            {
+                ToolTipImage = new BitmapImage(new Uri(Path.Combine(addinFolder, "res", "WSP355x355.png"))),
+                ToolTip = "Exporting and Importing Equipment Numbers with Excel"
+            };
+
+            PushButton createSpheresButton = coordinationPanel.AddItem(coordinationSpheresData) as PushButton;
+            createSpheresButton.LargeImage = new BitmapImage(new Uri(Path.Combine(addinFolder, "res", "eq32x32.png")));
+
 
             //Transaction definition
             //delete elements
@@ -134,7 +155,12 @@
             //update Locations
             exportLocHandler = new ExportLocationsHandler();
             exportLocEvent = ExternalEvent.Create(exportLocHandler);
-
+            //create Spheres 
+            createSpheresHandler = new CreateSphereHandler();
+            createSpheresEvent = ExternalEvent.Create(createSpheresHandler);
+            //create Workset 
+            createWorksetHandler = new CreateWorksetHandler();
+            createWorksetEvent = ExternalEvent.Create(createWorksetHandler);
 
 
 
