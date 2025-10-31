@@ -67,7 +67,7 @@ namespace WSPPolska_Tools
             List<Element> _allCoorSph = new FilteredElementCollector(_doc).OfClass(typeof(FamilyInstance)).Cast<FamilyInstance>().Where(fi => fi.Symbol != null && fi.Symbol.Family != null && fi.Symbol.Family.Name == "XX_GM_CLB_ClashSymbol").Cast<Element>().ToList();
             _allCoorSphDict = _allCoorSph.ToDictionary(e => e.Id.IntegerValue);
             _typeDict = new FilteredElementCollector(_doc).OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().Where(symbol => symbol.Family != null && symbol.Family.Name == "XX_GM_CLB_ClashSymbol").ToDictionary(symbol => symbol.Name);
-            MessageBox.Show($"{_allCoorSphDict.Count}_{_typeDict.Count}");
+            //MessageBox.Show($"{_allCoorSphDict.Count}_{_typeDict.Count}");
             if (_typeDict.Count == 0) { MessageBox.Show("Please load Sphere Family"); }
         }
 
