@@ -4,14 +4,19 @@ using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
 using BIM.IFC.Export.UI;
 using Microsoft.Office.Interop.Excel;
+using Microsoft.SharePoint.Client;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
+using System.Security;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
@@ -219,6 +224,77 @@ namespace WSPPolska_Tools
             //}
             //}
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string siteUrl = "https://wsponline.sharepoint.com/sites/GLOBAL-PLUNSCLUI52273";
+            string fileServerRelativeUrl = "/sites/GLOBAL-PLUNSCLUI52273/Shared Documents/05 BIM/BIM Organizational Matrix.xlsx";
+            string folderRelativeUrl = "/sites/GLOBAL-PLUNSCLUI52273/Shared Documents/05 BIM";
+            string username = "PLLK00169";
+            string password = "Sgbhde5y1!26"; // Consider using SecureString or OAuth for production
+
+            var securePassword = new SecureString();
+            foreach (char c in password) securePassword.AppendChar(c);
+
+            var credentials = new SharePointOnlineCredentials(username, securePassword);
+
+            using (ClientContext context = new ClientContext(siteUrl))
+            {
+                //context.Credentials = credentials;
+
+                //// Download the file
+                //FileInformation fileInfo = Microsoft.SharePoint.Client.File.OpenBinaryDirect(context, fileServerRelativeUrl);
+                //string tempFilePath = Path.Combine(Path.GetTempPath(), "BIM_Organizational_Matrix.xlsx");
+
+                //using (var fileStream = new FileStream(tempFilePath, FileMode.Create))
+                //{
+                //    fileInfo.Stream.CopyTo(fileStream);
+                //}
+
+                //// Modify the file using Excel Interop
+                //Excel.Application excelApp = new Excel.Application();
+                //Excel.Workbook workbook = excelApp.Workbooks.Open(tempFilePath);
+                //Excel.Worksheet worksheet = workbook.Sheets[1];
+                //for (int i = 1; i < 10; i++)
+                //{
+                //    MessageBox.Show(worksheet.Cells[i, 1].Value.ToString());
+                //}
+
+                //// Example modification
+                ////worksheet.Cells[1, 1].Value = "Updated by CSOM";
+
+                //workbook.Save();
+                //workbook.Close();
+                //excelApp.Quit();
+
+                //// Upload the modified file back to SharePoint
+                //using (var fs = new FileStream(tempFilePath, FileMode.Open))
+                //{
+                //    Microsoft.SharePoint.Client.File.SaveBinaryDirect(context, fileServerRelativeUrl, fs, true);
+                //}
+
+                //Console.WriteLine("File updated and saved back to SharePoint.");
+                context.Credentials = credentials;
+
+                // Get the folder
+                Folder folder = context.Web.GetFolderByServerRelativeUrl(folderRelativeUrl);
+                context.Load(folder.Files);
+                context.ExecuteQuery();
+
+                // Build the file list
+                StringBuilder fileList = new StringBuilder();
+                foreach (Microsoft.SharePoint.Client.File file in folder.Files)
+                {
+                    fileList.AppendLine(file.Name);
+                }
+
+                // Show in MessageBox
+                MessageBox.Show(fileList.ToString(), "Files in SharePoint Folder", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+        }
+
     }
-}
+    }
+//}
 //}
