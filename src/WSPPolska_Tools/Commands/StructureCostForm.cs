@@ -90,16 +90,35 @@ namespace WSPPolska_Tools.Commands
             IncNamingNo.Text = string.Empty;
             remainingCounter.Text = string.Empty;
         }
+
+        private void SelectElementsFromRows_Click(object sender, EventArgs e)
+        {
+            if (CostInformationGrid.SelectedRows.Count > 0)
+            {
+                List<ElementId> elementIds = new List<ElementId>();
+                foreach (DataGridViewRow selectedRow in CostInformationGrid.SelectedRows)
+                {
+                    elementIds.AddRange(selectedRow.Tag as List<ElementId>);
+                }
+
+                if (elementIds != null && elementIds.Count > 0)
+                {
+                    uidoc.Selection.SetElementIds(elementIds);
+                }
+            }
+        }
+
         private void CostAnalysis_Click(object sender, EventArgs e)
         {
             try
             {
+                List<Element> selectedElements = new List<Element>();
 
                 // Step 1: Let user select elements
                 IList<Reference> selectedRefs = uidoc.Selection.PickObjects(ObjectType.Element, "Select elements to analyze");
 
                 // Step 2: Collect elements
-                List<Element> selectedElements = selectedRefs
+                selectedElements = selectedRefs
                     .Select(r => doc.GetElement(r))
                     .ToList();
 
@@ -121,7 +140,6 @@ namespace WSPPolska_Tools.Commands
                 var filteredElementsEl = selectedElements
                                 .Where(element => categoryNamesEl.Values.Any(cat => element.Category.Id.IntegerValue == (int)cat))
                                 .ToList();
-
                 remainingElements = selectedElements
                                 .Except(filteredElementsFI.Concat(filteredElementsEl))
                                 .Select(f => f.Id)
@@ -163,7 +181,7 @@ namespace WSPPolska_Tools.Commands
                     elReinforcementRatio = element.LookupParameter("WSP_ReinforcementRatio").AsValueString();
                     string dictionaryKey = string.Join("|", new[] { elCategory, elType, elMaterial, elReinforcementRatio });
 
-                    if (elementDictionaryFI.ContainsKey(dictionaryKey))
+                    if (elementDictionaryEl.ContainsKey(dictionaryKey))
                     {
                         List<Element> existingListEl = elementDictionaryEl[dictionaryKey];
                         existingListEl.Add(element);
@@ -221,6 +239,7 @@ namespace WSPPolska_Tools.Commands
                         {
                             structuralSteelPrice = priceList[elMaterial];
                         }
+                        
                         foreach (var familyInstance in familyInstances)
                         {
                             try
@@ -236,6 +255,12 @@ namespace WSPPolska_Tools.Commands
                         try
                         {
                             kgPerm = familyInstances[0].Symbol.LookupParameter("WSP_MassPerUnitLength").AsDouble() / 0.3048;
+                            if (kgPerm == 9999)
+                            {
+                                MessageBox.Show($"Type {elType} has incorrect kg/m value");
+                                notCalculated.AddRange(familyInstances.Select(f => f.Id).Distinct().ToList());
+                                continue;
+                            }
                             unitCost = kgPerm /1000 * structuralSteelPrice;
                         }
                         catch
@@ -258,7 +283,6 @@ namespace WSPPolska_Tools.Commands
                 foreach (var kvp in elementDictionaryEl.OrderBy(k => k.Key))
                 {
                     string[] dKey = kvp.Key.Split('|');
-
                     string elCategory = dKey.Length > 0 ? dKey[0] : string.Empty;
                     string elType = dKey.Length > 1 ? dKey[1] : string.Empty;
                     string elMaterial = dKey.Length > 2 ? dKey[2] : string.Empty;
@@ -325,28 +349,13 @@ namespace WSPPolska_Tools.Commands
             this.Close();
         }
 
-        private void CostInformationGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void CostInformationGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-
-            if (CostInformationGrid.SelectedRows.Count > 0)
-            {
-                var selectedRow = CostInformationGrid.SelectedRows[0];
-
-                // If you stored ElementIds as a List<ElementId> in Tag
-                var elementIds = selectedRow.Tag as List<ElementId>;
-
-                if (elementIds != null && elementIds.Count > 0)
-                {
-                    uidoc.Selection.SetElementIds(elementIds);
-                }
-            }
-
         }
 
         private void IncNaming_Click(object sender, EventArgs e)
         {
             uidoc.Selection.SetElementIds(incorrectNaming);
-
         }
 
         private void VolNotCal_Click(object sender, EventArgs e)

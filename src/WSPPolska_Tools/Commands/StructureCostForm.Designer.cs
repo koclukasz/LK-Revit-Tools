@@ -1,4 +1,6 @@
-﻿namespace WSPPolska_Tools.Commands
+﻿using System.Windows.Forms;
+
+namespace WSPPolska_Tools.Commands
 {
     partial class StructureCostForm
     {
@@ -48,6 +50,7 @@
             this.NotCalcNo = new System.Windows.Forms.TextBox();
             this.RemainingSel = new System.Windows.Forms.Button();
             this.remainingCounter = new System.Windows.Forms.TextBox();
+            this.SelectElementsFromRows = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CostInformationGrid)).BeginInit();
             this.SuspendLayout();
@@ -107,9 +110,10 @@
             this.TotalCost});
             this.CostInformationGrid.Location = new System.Drawing.Point(12, 123);
             this.CostInformationGrid.Name = "CostInformationGrid";
+            this.CostInformationGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.CostInformationGrid.Size = new System.Drawing.Size(868, 320);
             this.CostInformationGrid.TabIndex = 16;
-            this.CostInformationGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CostInformationGrid_CellContentClick);
+            this.CostInformationGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CostInformationGrid_CellClick);
             // 
             // Category
             // 
@@ -224,6 +228,19 @@
             this.remainingCounter.Size = new System.Drawing.Size(100, 20);
             this.remainingCounter.TabIndex = 20;
             // 
+            // SelectElementsFromRows
+            // 
+            this.SelectElementsFromRows.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(66)))), ((int)(((byte)(58)))));
+            this.SelectElementsFromRows.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.SelectElementsFromRows.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.SelectElementsFromRows.Location = new System.Drawing.Point(113, 77);
+            this.SelectElementsFromRows.Name = "SelectElementsFromRows";
+            this.SelectElementsFromRows.Size = new System.Drawing.Size(175, 23);
+            this.SelectElementsFromRows.TabIndex = 15;
+            this.SelectElementsFromRows.Text = "Select Element from Row";
+            this.SelectElementsFromRows.UseVisualStyleBackColor = false;
+            this.SelectElementsFromRows.Click += new System.EventHandler(this.SelectElementsFromRows_Click);
+            // 
             // StructureCostForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -238,6 +255,7 @@
             this.Controls.Add(this.IncNaming);
             this.Controls.Add(this.CostInformationGrid);
             this.Controls.Add(this.ClearData);
+            this.Controls.Add(this.SelectElementsFromRows);
             this.Controls.Add(this.ExportData);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.buttonClose);
@@ -272,5 +290,6 @@
         private System.Windows.Forms.TextBox NotCalcNo;
         private System.Windows.Forms.Button RemainingSel;
         private System.Windows.Forms.TextBox remainingCounter;
+        private Button SelectElementsFromRows;
     }
 }
