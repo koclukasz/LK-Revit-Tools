@@ -181,14 +181,6 @@ namespace WSPPolska_Tools
                         }
                         try
                         {
-                            //string rangeAddress = $"A2:I{lastRow}";
-                            //object[,] writeArray = new object[newRows.Count, 9];
-                            //worksheetForList.Cells[RowValueList, 3].Value = newRowEnd;
-
-                            //for (int i = 0; i < newRows.Count; i++)
-                            //    for (int j = 0; j < 9; j++)
-                            //        writeArray[i, j] = newRows[i][j];
-
                             clashTestWorksheet.Range[$"A2:I{lastRow}"].Value2 = existingData;
                         }
                         catch { }

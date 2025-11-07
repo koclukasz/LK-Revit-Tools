@@ -149,6 +149,13 @@
     <Compile Include="Commands\CreateCoordinationSpheres.Designer.cs">
       <DependentUpon>CreateCoordinationSpheres.cs</DependentUpon>
     </Compile>
+    <Compile Include="Commands\StructureCostFormCommand.cs" />
+    <Compile Include="Commands\StructureCostForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Commands\StructureCostForm.Designer.cs">
+      <DependentUpon>StructureCostForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Commands\HandlersForTrans\ChangeLocationHandler.cs" />
     <Compile Include="Commands\HandlersForTrans\CreateWorksetHandler.cs" />
     <Compile Include="Commands\HandlersForTrans\ExportLocationsHandler.cs" />
@@ -189,6 +196,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Commands\GeolocationForm.resx">
       <DependentUpon>GeolocationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Commands\StructureCostForm.resx">
+      <DependentUpon>StructureCostForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -236,6 +246,14 @@ xcopy /Y "C:\aaaLukasz\GitHub\LK-Revit-Tools\addin\WSPPolska_Tools.addin" "C:\Pr
 
 
 xcopy /Y /E /I "$(ProjectDir)res\*.*" "C:\ProgramData\Autodesk\Revit\Addins\2022\WSPPolska_Tools\res\"
+
+mkdir "C:\ProgramData\Autodesk\Revit\Addins\2024\WSPPolska_Tools\WSPPolska_Tools"
+
+xcopy /Y /D "$(TargetPath)" "C:\ProgramData\Autodesk\Revit\Addins\2024\WSPPolska_Tools"
+xcopy /Y "C:\aaaLukasz\GitHub\LK-Revit-Tools\addin\WSPPolska_Tools.addin" "C:\ProgramData\Autodesk\Revit\Addins\2024\"
+
+
+xcopy /Y /E /I "$(ProjectDir)res\*.*" "C:\ProgramData\Autodesk\Revit\Addins\2024\WSPPolska_Tools\res\"
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

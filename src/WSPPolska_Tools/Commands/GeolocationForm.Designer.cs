@@ -57,7 +57,7 @@ namespace WSPPolska_Tools
             this.ExportData.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.ExportData.Location = new System.Drawing.Point(152, 27);
             this.ExportData.Name = "ExportData";
-            this.ExportData.Size = new System.Drawing.Size(103, 23);
+            this.ExportData.Size = new System.Drawing.Size(103, 20);
             this.ExportData.TabIndex = 0;
             this.ExportData.Text = "Export to Excel";
             this.ExportData.UseVisualStyleBackColor = false;

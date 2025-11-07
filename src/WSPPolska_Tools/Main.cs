@@ -96,6 +96,15 @@
 
             var SplitButton = otherPanel.AddItem(SplitData) as PushButton;
             SplitButton.LargeImage = new BitmapImage(new Uri(Path.Combine(addinFolder, "res", "split32x32.png")));
+            
+            var StructuralCostData = new PushButtonData("Structural Cost", "Structural Cost", Assembly.GetExecutingAssembly().Location, "WSPPolska_Tools.StructureCostFormCommand")
+            {
+                ToolTipImage = new BitmapImage(new Uri(Path.Combine(addinFolder, "res", "WSP355x355.png"))),
+                ToolTip = "Analysis of the cost of selected Elements"
+            };
+
+            var StructuralCostButton = otherPanel.AddItem(StructuralCostData) as PushButton;
+            StructuralCostButton.LargeImage = new BitmapImage(new Uri(Path.Combine(addinFolder, "res", "strucCost32x32.png")));
 
             //Geodata Panel inport
             string geoLocationPanelName = "Geolocation Data";
@@ -139,7 +148,7 @@
             };
 
             PushButton createSpheresButton = coordinationPanel.AddItem(coordinationSpheresData) as PushButton;
-            createSpheresButton.LargeImage = new BitmapImage(new Uri(Path.Combine(addinFolder, "res", "eq32x32.png")));
+            createSpheresButton.LargeImage = new BitmapImage(new Uri(Path.Combine(addinFolder, "res", "coordSph32x32.png")));
 
 
             //Transaction definition

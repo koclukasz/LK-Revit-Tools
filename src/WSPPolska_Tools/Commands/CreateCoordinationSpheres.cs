@@ -120,109 +120,6 @@ namespace WSPPolska_Tools
             Main.createSpheresHandler.allCoorSphDict = _allCoorSphDict;
 
             Main.createSpheresEvent.Raise();
-
-
-
-
-
-            //Excel.Application excelApp = new Excel.Application();
-            //Excel.Workbook workbook = excelApp.Workbooks.Open(openExcelExportDialog.FileName);
-            //foreach (Worksheet clashTestWorksheet in workbook.Worksheets)
-            //{
-            //    int lastRow = ExcelHelper.GetLastNonEmptyRow(clashTestWorksheet);
-            //    string clashTestName = clashTestWorksheet.Name;
-            //    Workset selectedWorkset = userWorksets.FirstOrDefault(ws => ws.Name.Equals(clashTestName, StringComparison.OrdinalIgnoreCase));
-            //    if (selectedWorkset == null)
-            //    {
-            //        Main.createWorksetHandler.worksetName = clashTestName;
-            //        Main.createWorksetEvent.Raise();
-            //        selectedWorkset = Main.createWorksetHandler.CreatedWorkset;
-            //        //MessageBox.Show($"{selectedWorkset.Id.IntegerValue}");
-            //    }
-            //    MessageBox.Show(lastRow.ToString());
-            //for (int row = 1; row <= lastRow; row++)
-            //{
-            //    string trigger = clashTestWorksheet.Cells[row, 3]?.Value2?.ToString(); // Column C
-            //    if (string.IsNullOrWhiteSpace(trigger))
-            //        continue;
-
-            //    string comment = clashTestWorksheet.Cells[row, 1]?.Value2?.ToString(); // Column A
-            //    string status = clashTestWorksheet.Cells[row, 2]?.Value2?.ToString();  // Column B
-            //    string locationStr = clashTestWorksheet.Cells[row, 6]?.Value2?.ToString(); // Column F
-            //    string elementIdStr = clashTestWorksheet.Cells[row, 7]?.Value2?.ToString(); // Column G
-            //    FamilySymbol symbol;
-            //    FamilyInstance clashElement = null;
-            //    if (string.IsNullOrWhiteSpace(elementIdStr))
-            //    {
-
-            //        if (!typeDict.TryGetValue(status, out symbol))
-            //        {
-            //            MessageBox.Show($"{status} not found as Type");
-            //            continue;
-            //        }
-
-            //        XYZ location = ParseLocation(locationStr);
-            //        if (location == null)
-            //        {
-            //            clashTestWorksheet.Cells[row, 7].Value2 = "Location Incorrect"; // Write ID to column G
-            //            continue;
-            //        }
-
-            //        Main.createSpheresHandler.location = location;
-            //        Main.createSpheresHandler.symbol = symbol;
-            //        Main.createSpheresHandler.workset = selectedWorkset;
-            //        Main.createSpheresHandler.commentVal = comment;
-            //        Main.createSpheresEvent.Raise();
-
-            //        clashElement = doc.Create.NewFamilyInstance(location, symbol, StructuralType.NonStructural);
-            //        clashTestWorksheet.Cells[row, 7].Value2 = clashElement.Id.IntegerValue; // Write ID to column G
-            //    }
-            //    else
-            //    {
-            //        clashElement = allCoorSphDict[clashElement.Id.IntegerValue] as FamilyInstance;
-            //        if (clashElement.Symbol.Name != status)
-            //        {
-            //            //modify ty1pe
-            //        }
-            //    }
-
-            //if (clashElement != null)
-            //{
-            //    using (Transaction tx = new Transaction(doc, "Update Clash Element"))
-            //    {
-            //        tx.Start();
-
-            //        // Update Workset
-            //        WorksetTable worksetTable = doc.GetWorksetTable();
-            //        Workset workset = worksetTable.GetWorkset();
-            //        if (workset != null)
-            //        {
-            //            Parameter wsParam = clashElement.get_Parameter(BuiltInParameter.ELEM_PARTITION_PARAM);
-            //            if (wsParam != null && !wsParam.IsReadOnly)
-            //                wsParam.Set(workset.Id.IntegerValue);
-            //        }
-
-            //        // Update Status (Type Name)
-            //        FamilyInstance fi = clashElement as FamilyInstance;
-            //        if (fi != null && fi.Symbol.Name != status)
-            //        {
-            //            FamilySymbol newSymbol = new FilteredElementCollector(doc)
-            //                .OfClass(typeof(FamilySymbol))
-            //                .Cast<FamilySymbol>()
-            //                .FirstOrDefault(s => s.Name == status && s.Family.Name == "XX_GM_CLB_ClashSymbol");
-
-            //            if (newSymbol != null)
-            //                fi.Symbol = newSymbol;
-            //        }
-
-            //        // Update Comment
-            //        Parameter commentParam = clashElement.LookupParameter("Comments");
-            //        if (commentParam != null && !commentParam.IsReadOnly)
-            //            commentParam.Set(comment);
-
-            //        tx.Commit();
-            //}
-            //}
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -240,40 +137,6 @@ namespace WSPPolska_Tools
 
             using (ClientContext context = new ClientContext(siteUrl))
             {
-                //context.Credentials = credentials;
-
-                //// Download the file
-                //FileInformation fileInfo = Microsoft.SharePoint.Client.File.OpenBinaryDirect(context, fileServerRelativeUrl);
-                //string tempFilePath = Path.Combine(Path.GetTempPath(), "BIM_Organizational_Matrix.xlsx");
-
-                //using (var fileStream = new FileStream(tempFilePath, FileMode.Create))
-                //{
-                //    fileInfo.Stream.CopyTo(fileStream);
-                //}
-
-                //// Modify the file using Excel Interop
-                //Excel.Application excelApp = new Excel.Application();
-                //Excel.Workbook workbook = excelApp.Workbooks.Open(tempFilePath);
-                //Excel.Worksheet worksheet = workbook.Sheets[1];
-                //for (int i = 1; i < 10; i++)
-                //{
-                //    MessageBox.Show(worksheet.Cells[i, 1].Value.ToString());
-                //}
-
-                //// Example modification
-                ////worksheet.Cells[1, 1].Value = "Updated by CSOM";
-
-                //workbook.Save();
-                //workbook.Close();
-                //excelApp.Quit();
-
-                //// Upload the modified file back to SharePoint
-                //using (var fs = new FileStream(tempFilePath, FileMode.Open))
-                //{
-                //    Microsoft.SharePoint.Client.File.SaveBinaryDirect(context, fileServerRelativeUrl, fs, true);
-                //}
-
-                //Console.WriteLine("File updated and saved back to SharePoint.");
                 context.Credentials = credentials;
 
                 // Get the folder
@@ -295,6 +158,4 @@ namespace WSPPolska_Tools
         }
 
     }
-    }
-//}
-//}
+}
