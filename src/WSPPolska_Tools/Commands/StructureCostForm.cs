@@ -55,8 +55,10 @@ namespace WSPPolska_Tools.Commands
             Excel.Application excelApp = new Excel.Application();
             Excel.Workbook workbook = excelApp.Workbooks.Open("C:\\aaaLukasz\\StructuralUnitPrices.xlsx");
             Excel.Worksheet worksheet = workbook.Sheets[1];
+            
 
-            for(int row = 1; row <= 30; row++)
+
+            for (int row = 1; row <= 30; row++)
             {
                 string key = worksheet.Cells[row, 1].Text;
                 string valueText = worksheet.Cells[row, 2].Text;
@@ -72,8 +74,13 @@ namespace WSPPolska_Tools.Commands
             reinforcementPrice = priceList["Reinforcement"];
             concretePrice = priceList["Concrete"];
             structuralSteelPrice = priceList["Steel"];
-
+            workbook.Close();
+            excelApp.Quit();
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheet);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
             InitializeComponent();
+            generalReinforcementRatios.Rows.Add();
         }
         private void StructureCostForm_MouseDown(object sender, MouseEventArgs e)
         {
@@ -110,6 +117,44 @@ namespace WSPPolska_Tools.Commands
 
         private void CostAnalysis_Click(object sender, EventArgs e)
         {
+
+            elementDictionaryFI.Clear();
+            elementDictionaryEl.Clear();
+            incorrectNaming.Clear();
+            notCalculated.Clear();
+            remainingElements.Clear();
+            CostInformationGrid.Rows.Clear();
+
+            Dictionary<string, double> reinfRations = new Dictionary<string, double>();
+            try
+            { 
+                if (double.TryParse(generalReinforcementRatios.Rows[0].Cells[0].Value.ToString(), out double beamR))
+                {
+                    reinfRations["Beams"] = beamR;
+                }
+                if (double.TryParse(generalReinforcementRatios.Rows[0].Cells[1].Value.ToString(), out double columnR))
+                {
+                    reinfRations["Columns"] = columnR;
+                }
+
+                if (double.TryParse(generalReinforcementRatios.Rows[0].Cells[2].Value.ToString(), out double slabR))
+                {
+                    reinfRations["Floors"] = slabR;
+                }
+                if (double.TryParse(generalReinforcementRatios.Rows[0].Cells[3].Value.ToString(), out double wallR))
+                {
+                    reinfRations["Walls"] = wallR;
+                }
+                if (double.TryParse(generalReinforcementRatios.Rows[0].Cells[4].Value.ToString(), out double foundationR))
+                {
+                    reinfRations["Foundations"] = foundationR;
+                }
+            }
+            catch 
+            {
+                MessageBox.Show("Please provide general reinforcement Rations");
+                return;
+            }
             try
             {
                 List<Element> selectedElements = new List<Element>();
@@ -140,8 +185,14 @@ namespace WSPPolska_Tools.Commands
                 var filteredElementsEl = selectedElements
                                 .Where(element => categoryNamesEl.Values.Any(cat => element.Category.Id.IntegerValue == (int)cat))
                                 .ToList();
+
+                var filteredGroups = selectedElements
+                    .Where(element => element.Category.Id.IntegerValue == (int)BuiltInCategory.OST_IOSModelGroups)
+                    .ToList();
+
+
                 remainingElements = selectedElements
-                                .Except(filteredElementsFI.Concat(filteredElementsEl))
+                                .Except(filteredElementsFI.Concat(filteredElementsEl).Concat(filteredGroups))
                                 .Select(f => f.Id)
                                 .ToList();
                 remainingCounter.Text = remainingElements.Count.ToString();
@@ -158,7 +209,6 @@ namespace WSPPolska_Tools.Commands
                         elReinforcementRatio = element.LookupParameter("WSP_ReinforcementRatio").AsValueString();
                     }
                     string dictionaryKey = string.Join("|", new[] { elCategory, elFamily, elType, elMaterial, elReinforcementRatio });
-
                     if (elementDictionaryFI.ContainsKey(dictionaryKey))
                     {
                         List<FamilyInstance> existingList = elementDictionaryFI[dictionaryKey];
@@ -202,7 +252,8 @@ namespace WSPPolska_Tools.Commands
                     string elFamily = dKey.Length > 1 ? dKey[1] : string.Empty;
                     string elType = dKey.Length > 1 ? dKey[2] : string.Empty;
                     string elMaterial = dKey.Length > 2 ? dKey[3] : string.Empty;
-                    double elReinforcementRatio = 0.0;
+                    double elReinforcementRatio = 0;
+                    double elReinforcementRatioToShow = 0;
                     List<FamilyInstance> familyInstances = kvp.Value;
                     double volume = 0;
                     double length = 0;
@@ -226,10 +277,19 @@ namespace WSPPolska_Tools.Commands
                                 notCalculated.Add(familyInstance.Id);
                             }
                         }
-                        double.TryParse(dKey[4], System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.CurrentCulture, out elReinforcementRatio);
+                        if (double.TryParse(dKey[4], System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.CurrentCulture, out elReinforcementRatio) && elReinforcementRatio > 0)
+                        {
+                            elReinforcementRatioToShow = elReinforcementRatio;
+                        }
+                        else
+                        {
+                            elReinforcementRatioToShow = 0;
+                            elReinforcementRatio = reinfRations[elCategory];
+                        }
+
                         unitCost = elReinforcementRatio * reinforcementPrice / 1000 + concretePrice;
                         totalCost = unitCost * volume;
-                        int rowIndex = CostInformationGrid.Rows.Add("CO " + elCategory, elType, elMaterial, volume, elReinforcementRatio, length, unitCost, Math.Round(totalCost, 0));
+                        int rowIndex = CostInformationGrid.Rows.Add("CO " + elCategory, elType, elMaterial, volume, elReinforcementRatioToShow, length, unitCost, Math.Round(totalCost, 0));
                         CostInformationGrid.Rows[rowIndex].Tag = familyInstances.Select(f => f.Id).Distinct().ToList();
                     }
                     else if (elFamily.Contains("STL"))
@@ -286,7 +346,8 @@ namespace WSPPolska_Tools.Commands
                     string elCategory = dKey.Length > 0 ? dKey[0] : string.Empty;
                     string elType = dKey.Length > 1 ? dKey[1] : string.Empty;
                     string elMaterial = dKey.Length > 2 ? dKey[2] : string.Empty;
-                    double elReinforcementRatio = 0.0;
+                    double elReinforcementRatio = 0;
+                    double elReinforcementRatioToShow = 0;
                     List<Element> familyInstances = kvp.Value;
                     double volume = 0;
                     double length = 0;
@@ -304,10 +365,19 @@ namespace WSPPolska_Tools.Commands
                             notCalculated.Add(element.Id);
                         }
                     }
-                    double.TryParse(dKey[3], System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.CurrentCulture, out elReinforcementRatio);
+                    if (double.TryParse(dKey[3], System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.CurrentCulture, out elReinforcementRatio) && elReinforcementRatio > 0)
+                    {
+                        elReinforcementRatioToShow = elReinforcementRatio;
+                    }
+                    else
+                    {
+                        elReinforcementRatioToShow = 0;
+                        elReinforcementRatio = reinfRations[elCategory];
+                    }
                     unitCost = elReinforcementRatio * reinforcementPrice / 1000 + concretePrice;
                     totalCost = unitCost * volume;
-                    int rowIndex = CostInformationGrid.Rows.Add(elCategory, elType, elMaterial, volume, elReinforcementRatio, length, unitCost, Math.Round(totalCost, 0));
+
+                    int rowIndex = CostInformationGrid.Rows.Add(elCategory, elType, elMaterial, volume, elReinforcementRatioToShow, length, unitCost, Math.Round(totalCost, 0));
                     CostInformationGrid.Rows[rowIndex].Tag = familyInstances.Select(f => f.Id).Distinct().ToList();
                 }
                 double wholeTotalCost = 0;
@@ -365,6 +435,11 @@ namespace WSPPolska_Tools.Commands
         private void RemainingSel_Click(object sender, EventArgs e)
         {
             uidoc.Selection.SetElementIds(remainingElements);
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

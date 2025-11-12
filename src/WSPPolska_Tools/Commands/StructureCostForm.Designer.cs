@@ -51,8 +51,15 @@ namespace WSPPolska_Tools.Commands
             this.RemainingSel = new System.Windows.Forms.Button();
             this.remainingCounter = new System.Windows.Forms.TextBox();
             this.SelectElementsFromRows = new System.Windows.Forms.Button();
+            this.generalReinforcementRatios = new System.Windows.Forms.DataGridView();
+            this.BeamsR = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnR = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SlabR = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WallR = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FoundationR = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CostInformationGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.generalReinforcementRatios)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -108,10 +115,10 @@ namespace WSPPolska_Tools.Commands
             this.Length,
             this.UnitCost,
             this.TotalCost});
-            this.CostInformationGrid.Location = new System.Drawing.Point(12, 123);
+            this.CostInformationGrid.Location = new System.Drawing.Point(12, 162);
             this.CostInformationGrid.Name = "CostInformationGrid";
             this.CostInformationGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.CostInformationGrid.Size = new System.Drawing.Size(868, 320);
+            this.CostInformationGrid.Size = new System.Drawing.Size(868, 281);
             this.CostInformationGrid.TabIndex = 16;
             this.CostInformationGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CostInformationGrid_CellClick);
             // 
@@ -160,9 +167,9 @@ namespace WSPPolska_Tools.Commands
             this.ClearData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(66)))), ((int)(((byte)(58)))));
             this.ClearData.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.ClearData.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.ClearData.Location = new System.Drawing.Point(236, 24);
+            this.ClearData.Location = new System.Drawing.Point(759, 24);
             this.ClearData.Name = "ClearData";
-            this.ClearData.Size = new System.Drawing.Size(103, 23);
+            this.ClearData.Size = new System.Drawing.Size(80, 23);
             this.ClearData.TabIndex = 15;
             this.ClearData.Text = "Clear Data";
             this.ClearData.UseVisualStyleBackColor = false;
@@ -173,7 +180,7 @@ namespace WSPPolska_Tools.Commands
             this.IncNaming.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(66)))), ((int)(((byte)(58)))));
             this.IncNaming.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.IncNaming.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.IncNaming.Location = new System.Drawing.Point(365, 24);
+            this.IncNaming.Location = new System.Drawing.Point(238, 24);
             this.IncNaming.Name = "IncNaming";
             this.IncNaming.Size = new System.Drawing.Size(103, 23);
             this.IncNaming.TabIndex = 17;
@@ -186,7 +193,7 @@ namespace WSPPolska_Tools.Commands
             this.VolNotCal.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(66)))), ((int)(((byte)(58)))));
             this.VolNotCal.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.VolNotCal.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.VolNotCal.Location = new System.Drawing.Point(490, 24);
+            this.VolNotCal.Location = new System.Drawing.Point(363, 24);
             this.VolNotCal.Name = "VolNotCal";
             this.VolNotCal.Size = new System.Drawing.Size(135, 23);
             this.VolNotCal.TabIndex = 18;
@@ -196,14 +203,14 @@ namespace WSPPolska_Tools.Commands
             // 
             // IncNamingNo
             // 
-            this.IncNamingNo.Location = new System.Drawing.Point(365, 66);
+            this.IncNamingNo.Location = new System.Drawing.Point(238, 66);
             this.IncNamingNo.Name = "IncNamingNo";
             this.IncNamingNo.Size = new System.Drawing.Size(100, 20);
             this.IncNamingNo.TabIndex = 19;
             // 
             // NotCalcNo
             // 
-            this.NotCalcNo.Location = new System.Drawing.Point(490, 66);
+            this.NotCalcNo.Location = new System.Drawing.Point(363, 66);
             this.NotCalcNo.Name = "NotCalcNo";
             this.NotCalcNo.Size = new System.Drawing.Size(100, 20);
             this.NotCalcNo.TabIndex = 20;
@@ -213,7 +220,7 @@ namespace WSPPolska_Tools.Commands
             this.RemainingSel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(66)))), ((int)(((byte)(58)))));
             this.RemainingSel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.RemainingSel.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.RemainingSel.Location = new System.Drawing.Point(645, 24);
+            this.RemainingSel.Location = new System.Drawing.Point(518, 24);
             this.RemainingSel.Name = "RemainingSel";
             this.RemainingSel.Size = new System.Drawing.Size(135, 23);
             this.RemainingSel.TabIndex = 18;
@@ -223,7 +230,7 @@ namespace WSPPolska_Tools.Commands
             // 
             // remainingCounter
             // 
-            this.remainingCounter.Location = new System.Drawing.Point(645, 66);
+            this.remainingCounter.Location = new System.Drawing.Point(518, 66);
             this.remainingCounter.Name = "remainingCounter";
             this.remainingCounter.Size = new System.Drawing.Size(100, 20);
             this.remainingCounter.TabIndex = 20;
@@ -233,7 +240,7 @@ namespace WSPPolska_Tools.Commands
             this.SelectElementsFromRows.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(66)))), ((int)(((byte)(58)))));
             this.SelectElementsFromRows.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.SelectElementsFromRows.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.SelectElementsFromRows.Location = new System.Drawing.Point(113, 77);
+            this.SelectElementsFromRows.Location = new System.Drawing.Point(41, 63);
             this.SelectElementsFromRows.Name = "SelectElementsFromRows";
             this.SelectElementsFromRows.Size = new System.Drawing.Size(175, 23);
             this.SelectElementsFromRows.TabIndex = 15;
@@ -241,12 +248,66 @@ namespace WSPPolska_Tools.Commands
             this.SelectElementsFromRows.UseVisualStyleBackColor = false;
             this.SelectElementsFromRows.Click += new System.EventHandler(this.SelectElementsFromRows_Click);
             // 
+            // generalReinforcementRatios
+            // 
+            this.generalReinforcementRatios.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.generalReinforcementRatios.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            this.generalReinforcementRatios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.generalReinforcementRatios.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.BeamsR,
+            this.ColumnR,
+            this.SlabR,
+            this.WallR,
+            this.FoundationR});
+            this.generalReinforcementRatios.Location = new System.Drawing.Point(12, 103);
+            this.generalReinforcementRatios.Name = "generalReinforcementRatios";
+            this.generalReinforcementRatios.Size = new System.Drawing.Size(868, 53);
+            this.generalReinforcementRatios.TabIndex = 21;
+
+            this.generalReinforcementRatios.ReadOnly = false;
+            this.generalReinforcementRatios.AllowUserToAddRows = false; // Usually for fixed ratios
+            this.generalReinforcementRatios.AllowUserToDeleteRows = false;
+
+            this.generalReinforcementRatios.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            // 
+            // BeamsR
+            // 
+            this.BeamsR.HeaderText = "Beams Reinforcement";
+            this.BeamsR.Name = "BeamsR";
+            this.BeamsR.Width = 160;
+            // 
+            // ColumnR
+            // 
+            this.ColumnR.HeaderText = "Column Reinforcement";
+            this.ColumnR.Name = "ColumnR";
+            this.ColumnR.Width = 160;
+            // 
+            // SlabR
+            // 
+            this.SlabR.HeaderText = "Slab Reinforcement";
+            this.SlabR.Name = "SlabR";
+            this.SlabR.Width = 160;
+            // 
+            // WallR
+            // 
+            this.WallR.HeaderText = "Wall Reinforcement";
+            this.WallR.Name = "WallR";
+            this.WallR.Width = 160;
+            // 
+            // FoundationR
+            // 
+            this.FoundationR.HeaderText = "Foundation Reinforcement";
+            this.FoundationR.Name = "FoundationR";
+            this.FoundationR.Width = 160;
+            // 
             // StructureCostForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(892, 455);
+            this.Controls.Add(this.generalReinforcementRatios);
             this.Controls.Add(this.remainingCounter);
             this.Controls.Add(this.NotCalcNo);
             this.Controls.Add(this.IncNamingNo);
@@ -264,6 +325,7 @@ namespace WSPPolska_Tools.Commands
             this.Text = "Cost Information";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CostInformationGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.generalReinforcementRatios)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -291,5 +353,11 @@ namespace WSPPolska_Tools.Commands
         private System.Windows.Forms.Button RemainingSel;
         private System.Windows.Forms.TextBox remainingCounter;
         private Button SelectElementsFromRows;
+        private DataGridView generalReinforcementRatios;
+        private DataGridViewTextBoxColumn BeamsR;
+        private DataGridViewTextBoxColumn ColumnR;
+        private DataGridViewTextBoxColumn SlabR;
+        private DataGridViewTextBoxColumn WallR;
+        private DataGridViewTextBoxColumn FoundationR;
     }
 }
