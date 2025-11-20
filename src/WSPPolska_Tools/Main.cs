@@ -141,6 +141,7 @@
             //Coordination Panel inport
             string coordinationPanelName = "Coordination Panel";
             RibbonPanel coordinationPanel = application.CreateRibbonPanel(tabName, coordinationPanelName);
+
             var coordinationSpheresData = new PushButtonData("Create Spheres", "Create Coordination Spheres", Assembly.GetExecutingAssembly().Location, "WSPPolska_Tools.CreateCoordinationSpheresCommand")
             {
                 ToolTipImage = new BitmapImage(new Uri(Path.Combine(addinFolder, "res", "WSP355x355.png"))),
@@ -149,6 +150,15 @@
 
             PushButton createSpheresButton = coordinationPanel.AddItem(coordinationSpheresData) as PushButton;
             createSpheresButton.LargeImage = new BitmapImage(new Uri(Path.Combine(addinFolder, "res", "coordSph32x32.png")));
+
+            var spheresIdData = new PushButtonData("Sphere Data", "Sphere Data", Assembly.GetExecutingAssembly().Location, "WSPPolska_Tools.SphereDataFormCommand")
+            {
+                ToolTipImage = new BitmapImage(new Uri(Path.Combine(addinFolder, "res", "WSP355x355.png"))),
+                ToolTip = "Exporting and Importing Equipment Numbers with Excel"
+            };
+
+            PushButton spheresIdButton = coordinationPanel.AddItem(spheresIdData) as PushButton;
+            spheresIdButton.LargeImage = new BitmapImage(new Uri(Path.Combine(addinFolder, "res", "sphereId32x32.png")));
 
 
             //Transaction definition

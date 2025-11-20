@@ -19,3 +19,4 @@ C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_T
 C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.ExportEquipmentNuForm.resources
 C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.CreateCoordinationSpheres.resources
 C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.Commands.StructureCostForm.resources
+C:\aaaLukasz\GitHub\LK-Revit-Tools\src\WSPPolska_Tools\obj\x64\Debug\WSPPolska_Tools.Commands.SphereDataForm.resources

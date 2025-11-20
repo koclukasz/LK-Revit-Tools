@@ -46,6 +46,8 @@ namespace WSPPolska_Tools.Commands
 
         public StructureCostForm(ExternalCommandData commandData)
         {
+            InitializeComponent();
+
             this.MouseDown += StructureCostForm_MouseDown;
             _commandData = commandData;
             uiapp = _commandData.Application;
@@ -53,9 +55,8 @@ namespace WSPPolska_Tools.Commands
             doc = uidoc.Document;
             userName = $"_{uiapp.Application.Username}";
             Excel.Application excelApp = new Excel.Application();
-            Excel.Workbook workbook = excelApp.Workbooks.Open("C:\\aaaLukasz\\StructuralUnitPrices.xlsx");
+            Excel.Workbook workbook = excelApp.Workbooks.Open("I:\\0030\\TECHNICAL LIBRARY\\SMEP\\01 STRUCTURAL\\17_Kosztorysy\\StructuralUnitPrices.xlsx");
             Excel.Worksheet worksheet = workbook.Sheets[1];
-            
 
 
             for (int row = 1; row <= 30; row++)
@@ -79,8 +80,9 @@ namespace WSPPolska_Tools.Commands
             System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheet);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
-            InitializeComponent();
             generalReinforcementRatios.Rows.Add();
+            pathTextBox.Text = @"I:\0030\TECHNICAL LIBRARY\SMEP\01 STRUCTURAL\17_Kosztorysy\StructuralUnitPrices.xlsx";
+
         }
         private void StructureCostForm_MouseDown(object sender, MouseEventArgs e)
         {
@@ -308,7 +310,7 @@ namespace WSPPolska_Tools.Commands
                             }
                             catch
                             {
-                                MessageBox.Show($"Element {familyInstance.Id.IntegerValue} cannot be checked for length");
+                                MessageBox.Show($"Script cannot find length value for element with Id {familyInstance.Id.IntegerValue}");
                                 notCalculated.Add(familyInstance.Id);
                             }
                         }
@@ -317,7 +319,7 @@ namespace WSPPolska_Tools.Commands
                             kgPerm = familyInstances[0].Symbol.LookupParameter("WSP_MassPerUnitLength").AsDouble() / 0.3048;
                             if (kgPerm == 9999)
                             {
-                                MessageBox.Show($"Type {elType} has incorrect kg/m value");
+                                MessageBox.Show($"Type {elType} does not have kg/m value provided.");
                                 notCalculated.AddRange(familyInstances.Select(f => f.Id).Distinct().ToList());
                                 continue;
                             }
@@ -325,7 +327,7 @@ namespace WSPPolska_Tools.Commands
                         }
                         catch
                         {
-                            MessageBox.Show($"{familyInstances[0].Symbol.Id.IntegerValue.ToString()} type id, WSP_MassPerUnit issue");
+                            MessageBox.Show($"{familyInstances[0].Symbol.Id.IntegerValue.ToString()} type id, WSP_MassPerUnitLength issue.\nProbably the parameter does not exists in family.");
                         }
                         totalCost = (unitCost * length);
                         int rowIndex = CostInformationGrid.Rows.Add("ST "+elCategory, elType, elMaterial, volume, kgPerm, length, unitCost, Math.Round(totalCost, 0));
@@ -437,9 +439,6 @@ namespace WSPPolska_Tools.Commands
             uidoc.Selection.SetElementIds(remainingElements);
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
+      
     }
 }

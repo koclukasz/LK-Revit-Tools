@@ -149,6 +149,13 @@
     <Compile Include="Commands\CreateCoordinationSpheres.Designer.cs">
       <DependentUpon>CreateCoordinationSpheres.cs</DependentUpon>
     </Compile>
+    <Compile Include="Commands\SphereDataForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Commands\SphereDataForm.Designer.cs">
+      <DependentUpon>SphereDataForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Commands\SphereDataFormCommand.cs" />
     <Compile Include="Commands\StructureCostFormCommand.cs" />
     <Compile Include="Commands\StructureCostForm.cs">
       <SubType>Form</SubType>
@@ -196,6 +203,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Commands\GeolocationForm.resx">
       <DependentUpon>GeolocationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Commands\SphereDataForm.resx">
+      <DependentUpon>SphereDataForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Commands\StructureCostForm.resx">
       <DependentUpon>StructureCostForm.cs</DependentUpon>

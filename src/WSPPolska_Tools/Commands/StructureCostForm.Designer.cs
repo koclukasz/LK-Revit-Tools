@@ -35,14 +35,6 @@ namespace WSPPolska_Tools.Commands
             this.buttonClose = new System.Windows.Forms.Button();
             this.ExportData = new System.Windows.Forms.Button();
             this.CostInformationGrid = new System.Windows.Forms.DataGridView();
-            this.Category = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ElementType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Material = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ReinforcementRat = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Length = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.UnitCost = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TotalCost = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ClearData = new System.Windows.Forms.Button();
             this.IncNaming = new System.Windows.Forms.Button();
             this.VolNotCal = new System.Windows.Forms.Button();
@@ -57,6 +49,15 @@ namespace WSPPolska_Tools.Commands
             this.SlabR = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.WallR = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.FoundationR = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pathTextBox = new System.Windows.Forms.TextBox();
+            this.Category = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ElementType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Material = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Volume = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReinforcementRat = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Length = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.UnitCost = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TotalCost = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CostInformationGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.generalReinforcementRatios)).BeginInit();
@@ -78,7 +79,7 @@ namespace WSPPolska_Tools.Commands
             this.buttonClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
             this.buttonClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonClose.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.buttonClose.Location = new System.Drawing.Point(857, 12);
+            this.buttonClose.Location = new System.Drawing.Point(859, 12);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(23, 23);
             this.buttonClose.TabIndex = 13;
@@ -115,52 +116,12 @@ namespace WSPPolska_Tools.Commands
             this.Length,
             this.UnitCost,
             this.TotalCost});
-            this.CostInformationGrid.Location = new System.Drawing.Point(12, 162);
+            this.CostInformationGrid.Location = new System.Drawing.Point(12, 187);
             this.CostInformationGrid.Name = "CostInformationGrid";
             this.CostInformationGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.CostInformationGrid.Size = new System.Drawing.Size(868, 281);
+            this.CostInformationGrid.Size = new System.Drawing.Size(870, 291);
             this.CostInformationGrid.TabIndex = 16;
             this.CostInformationGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CostInformationGrid_CellClick);
-            // 
-            // Category
-            // 
-            this.Category.HeaderText = "Category";
-            this.Category.Name = "Category";
-            // 
-            // ElementType
-            // 
-            this.ElementType.HeaderText = "ElementType";
-            this.ElementType.Name = "ElementType";
-            // 
-            // Material
-            // 
-            this.Material.HeaderText = "Material";
-            this.Material.Name = "Material";
-            // 
-            // Volume
-            // 
-            this.Volume.HeaderText = "Volume";
-            this.Volume.Name = "Volume";
-            // 
-            // ReinforcementRat
-            // 
-            this.ReinforcementRat.HeaderText = "ReinforcementRat";
-            this.ReinforcementRat.Name = "ReinforcementRat";
-            // 
-            // Length
-            // 
-            this.Length.HeaderText = "Length";
-            this.Length.Name = "Length";
-            // 
-            // UnitCost
-            // 
-            this.UnitCost.HeaderText = "UnitCost";
-            this.UnitCost.Name = "UnitCost";
-            // 
-            // TotalCost
-            // 
-            this.TotalCost.HeaderText = "Total Cost";
-            this.TotalCost.Name = "TotalCost";
             // 
             // ClearData
             // 
@@ -250,6 +211,8 @@ namespace WSPPolska_Tools.Commands
             // 
             // generalReinforcementRatios
             // 
+            this.generalReinforcementRatios.AllowUserToAddRows = false;
+            this.generalReinforcementRatios.AllowUserToDeleteRows = false;
             this.generalReinforcementRatios.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.generalReinforcementRatios.BackgroundColor = System.Drawing.Color.WhiteSmoke;
@@ -260,16 +223,10 @@ namespace WSPPolska_Tools.Commands
             this.SlabR,
             this.WallR,
             this.FoundationR});
-            this.generalReinforcementRatios.Location = new System.Drawing.Point(12, 103);
+            this.generalReinforcementRatios.Location = new System.Drawing.Point(12, 128);
             this.generalReinforcementRatios.Name = "generalReinforcementRatios";
-            this.generalReinforcementRatios.Size = new System.Drawing.Size(868, 53);
+            this.generalReinforcementRatios.Size = new System.Drawing.Size(870, 53);
             this.generalReinforcementRatios.TabIndex = 21;
-
-            this.generalReinforcementRatios.ReadOnly = false;
-            this.generalReinforcementRatios.AllowUserToAddRows = false; // Usually for fixed ratios
-            this.generalReinforcementRatios.AllowUserToDeleteRows = false;
-
-            this.generalReinforcementRatios.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // BeamsR
             // 
@@ -301,12 +258,62 @@ namespace WSPPolska_Tools.Commands
             this.FoundationR.Name = "FoundationR";
             this.FoundationR.Width = 160;
             // 
+            // pathTextBox
+            // 
+            this.pathTextBox.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.pathTextBox.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold);
+            this.pathTextBox.Location = new System.Drawing.Point(13, 96);
+            this.pathTextBox.Name = "pathTextBox";
+            this.pathTextBox.Size = new System.Drawing.Size(869, 23);
+            this.pathTextBox.TabIndex = 22;
+            // 
+            // Category
+            // 
+            this.Category.HeaderText = "Category";
+            this.Category.Name = "Category";
+            // 
+            // ElementType
+            // 
+            this.ElementType.HeaderText = "ElementType";
+            this.ElementType.Name = "ElementType";
+            // 
+            // Material
+            // 
+            this.Material.HeaderText = "Material";
+            this.Material.Name = "Material";
+            // 
+            // Volume
+            // 
+            this.Volume.HeaderText = "Volume";
+            this.Volume.Name = "Volume";
+            // 
+            // ReinforcementRat
+            // 
+            this.ReinforcementRat.HeaderText = "Reinf Ratio / Mass per [m]";
+            this.ReinforcementRat.Name = "ReinforcementRat";
+            // 
+            // Length
+            // 
+            this.Length.HeaderText = "Length";
+            this.Length.Name = "Length";
+            // 
+            // UnitCost
+            // 
+            this.UnitCost.HeaderText = "UnitCost";
+            this.UnitCost.Name = "UnitCost";
+            // 
+            // TotalCost
+            // 
+            this.TotalCost.HeaderText = "Total Cost";
+            this.TotalCost.Name = "TotalCost";
+            // 
             // StructureCostForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(892, 455);
+            this.ClientSize = new System.Drawing.Size(894, 490);
+            this.Controls.Add(this.pathTextBox);
             this.Controls.Add(this.generalReinforcementRatios);
             this.Controls.Add(this.remainingCounter);
             this.Controls.Add(this.NotCalcNo);
@@ -337,14 +344,6 @@ namespace WSPPolska_Tools.Commands
         private System.Windows.Forms.Button buttonClose;
         private System.Windows.Forms.Button ExportData;
         private System.Windows.Forms.DataGridView CostInformationGrid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Category;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ElementType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Material;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ReinforcementRat;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Length;
-        private System.Windows.Forms.DataGridViewTextBoxColumn UnitCost;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TotalCost;
         private System.Windows.Forms.Button ClearData;
         private System.Windows.Forms.Button IncNaming;
         private System.Windows.Forms.Button VolNotCal;
@@ -359,5 +358,14 @@ namespace WSPPolska_Tools.Commands
         private DataGridViewTextBoxColumn SlabR;
         private DataGridViewTextBoxColumn WallR;
         private DataGridViewTextBoxColumn FoundationR;
+        private TextBox pathTextBox;
+        private DataGridViewTextBoxColumn Category;
+        private DataGridViewTextBoxColumn ElementType;
+        private DataGridViewTextBoxColumn Material;
+        private DataGridViewTextBoxColumn Volume;
+        private DataGridViewTextBoxColumn ReinforcementRat;
+        private DataGridViewTextBoxColumn Length;
+        private DataGridViewTextBoxColumn UnitCost;
+        private DataGridViewTextBoxColumn TotalCost;
     }
 }

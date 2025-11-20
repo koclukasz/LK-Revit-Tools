@@ -102,7 +102,6 @@ namespace WSPPolska_Tools
             }
             ICollection<Workset> userWorksets = new FilteredWorksetCollector(_doc).OfKind(WorksetKind.UserWorkset).ToWorksets();
 
-
             OpenFileDialog openExcelExportDialog = new OpenFileDialog
             {
                 Title = "Select an Excel File",
@@ -126,7 +125,7 @@ namespace WSPPolska_Tools
         {
             string siteUrl = "https://wsponline.sharepoint.com/sites/GLOBAL-PLUNSCLUI52273";
             string fileServerRelativeUrl = "/sites/GLOBAL-PLUNSCLUI52273/Shared Documents/05 BIM/BIM Organizational Matrix.xlsx";
-            string folderRelativeUrl = "/sites/GLOBAL-PLUNSCLUI52273/Shared Documents/05 BIM";
+            //string folderRelativeUrl = "/sites/GLOBAL-PLUNSCLUI52273/Shared Documents/05 BIM";
             string username = "PLLK00169";
             string password = "Sgbhde5y1!26"; // Consider using SecureString or OAuth for production
 
@@ -138,24 +137,33 @@ namespace WSPPolska_Tools
             using (ClientContext context = new ClientContext(siteUrl))
             {
                 context.Credentials = credentials;
+                Web web = context.Web;
 
                 // Get the folder
-                Folder folder = context.Web.GetFolderByServerRelativeUrl(folderRelativeUrl);
-                context.Load(folder.Files);
+                //Folder folder = context.Web.GetFolderByServerRelativeUrl(folderRelativeUrl);
+                context.Load(web, a=> a.ServerRelativeUrl);
+                context.ExecuteQuery();
+                FileInformation fileInfo = Microsoft.SharePoint.Client.File.OpenBinaryDirect(context, fileServerRelativeUrl);
                 context.ExecuteQuery();
 
-                // Build the file list
-                StringBuilder fileList = new StringBuilder();
-                foreach (Microsoft.SharePoint.Client.File file in folder.Files)
+                var filePath = @"C:\aaaLukasz\Śmieci tymczasowe\CLUJ\LocalCopy\BIM Organizational Matrix.xlsx";
+                using (var fileStream = new System.IO.FileStream(filePath, System.IO.FileMode.Create))
                 {
-                    fileList.AppendLine(file.Name);
+                    fileInfo.Stream.CopyTo(fileStream);
                 }
+                                // Build the file list
+                //StringBuilder fileList = new StringBuilder();
+                //foreach (Microsoft.SharePoint.Client.File file in folder.Files)
+                //{
+                //    fileList.AppendLine(file.Name);
+                //}
 
                 // Show in MessageBox
-                MessageBox.Show(fileList.ToString(), "Files in SharePoint Folder", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //MessageBox.Show(fileList.ToString(), "Files in SharePoint Folder", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
         }
 
+        
     }
 }

@@ -42,7 +42,6 @@ namespace WSPPolska_Tools
             this.buttonClose = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.SynchronizeExcel = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -77,7 +76,7 @@ namespace WSPPolska_Tools
             this.buttonClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
             this.buttonClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonClose.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.buttonClose.Location = new System.Drawing.Point(663, 12);
+            this.buttonClose.Location = new System.Drawing.Point(218, 12);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(23, 23);
             this.buttonClose.TabIndex = 10;
@@ -108,19 +107,12 @@ namespace WSPPolska_Tools
             this.SynchronizeExcel.UseVisualStyleBackColor = false;
             this.SynchronizeExcel.Click += new System.EventHandler(this.SynchronizeExcel_Click);
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(268, 72);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 14;
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(422, 72);
+            this.button1.Location = new System.Drawing.Point(168, 71);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 15;
+            this.button1.TabIndex = 14;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -130,9 +122,8 @@ namespace WSPPolska_Tools
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(698, 137);
+            this.ClientSize = new System.Drawing.Size(253, 127);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.SynchronizeExcel);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.buttonClose);
@@ -141,7 +132,6 @@ namespace WSPPolska_Tools
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -157,7 +147,6 @@ namespace WSPPolska_Tools
         private Button buttonClose;
         private PictureBox pictureBox1;
         private Button SynchronizeExcel;
-        private TextBox textBox1;
         private Button button1;
     }
 }

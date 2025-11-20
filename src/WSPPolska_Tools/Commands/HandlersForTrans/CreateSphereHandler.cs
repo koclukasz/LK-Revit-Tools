@@ -117,6 +117,7 @@ namespace WSPPolska_Tools
                                     continue;
                                 }
                                 clashElement = doc.Create.NewFamilyInstance(location, symbol, StructuralType.NonStructural);
+                                string clashSphereId = clashElement.Id.IntegerValue.ToString();
                                 Autodesk.Revit.DB.Parameter worksetParam = clashElement.get_Parameter(BuiltInParameter.ELEM_PARTITION_PARAM);
                                 if (worksetParam != null && !worksetParam.IsReadOnly)
                                 {
@@ -133,12 +134,12 @@ namespace WSPPolska_Tools
                                 ClashTestNameParam.Set(clashTestName);
                                 ClashPriorityParam.Set(priority);
                                 ClashCommentsParam.Set(comment);
-                                ClashSphereIdParam.Set(clashElement.Id.IntegerValue.ToString());
+                                ClashSphereIdParam.Set(clashSphereId);
                                 Item1IdsParam.Set(ids1);
                                 Item2IdsParam.Set(ids2);
 
 
-                                existingData[row, 8] = clashElement.Id.IntegerValue.ToString(); // Write ID to column H
+                                existingData[row, 8] = clashSphereId; // Write ID to column H
                             }
                             else
                             {
