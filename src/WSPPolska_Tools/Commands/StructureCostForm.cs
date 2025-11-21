@@ -26,6 +26,7 @@ namespace WSPPolska_Tools.Commands
 
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HTCAPTION = 0x2;
+
         private ExternalCommandData _commandData;
         private Document doc;
         private UIApplication uiapp;
@@ -84,6 +85,46 @@ namespace WSPPolska_Tools.Commands
             pathTextBox.Text = @"I:\0030\TECHNICAL LIBRARY\SMEP\01 STRUCTURAL\17_Kosztorysy\StructuralUnitPrices.xlsx";
 
         }
+
+
+
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_NCHITTEST = 0x84;
+            const int HTCLIENT = 1;
+            const int HTTOP = 12;
+            const int HTBOTTOM = 15;
+            //const int HTTOPLEFT = 13;
+            //const int HTTOPRIGHT = 14;
+            //const int HTBOTTOMLEFT = 16;
+            //const int HTBOTTOMRIGHT = 17;
+
+            if (m.Msg == WM_NCHITTEST)
+            {
+                base.WndProc(ref m);
+
+                if ((int)m.Result == HTCLIENT)
+                {
+                    System.Drawing.Point cursor = PointToClient(Cursor.Position);
+                    int resizeArea = 8; // Thickness for resize area
+
+                    bool top = cursor.Y <= resizeArea;
+                    bool bottom = cursor.Y >= this.ClientSize.Height - resizeArea;
+
+                    // Corners still allowed if you want diagonal resize
+                    if (top)
+                        m.Result = (IntPtr)HTTOP;
+                    else if (bottom)
+                        m.Result = (IntPtr)HTBOTTOM;
+                }
+                return;
+            }
+
+            base.WndProc(ref m);
+        }
+
+
+
         private void StructureCostForm_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)

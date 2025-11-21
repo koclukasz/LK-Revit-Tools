@@ -36,6 +36,7 @@
             this.elemsIds1Box = new System.Windows.Forms.TextBox();
             this.elemsIds2Box = new System.Windows.Forms.TextBox();
             this.elemsIds2 = new System.Windows.Forms.Button();
+            this.buttonClose = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -109,12 +110,27 @@
             this.elemsIds2.UseVisualStyleBackColor = true;
             this.elemsIds2.Click += new System.EventHandler(this.elemsIds2_Click);
             // 
+            // buttonClose
+            // 
+            this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
+            this.buttonClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonClose.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.buttonClose.Location = new System.Drawing.Point(449, 12);
+            this.buttonClose.Name = "buttonClose";
+            this.buttonClose.Size = new System.Drawing.Size(23, 23);
+            this.buttonClose.TabIndex = 17;
+            this.buttonClose.Text = "X";
+            this.buttonClose.UseVisualStyleBackColor = false;
+            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
+            // 
             // SphereDataForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(484, 169);
+            this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.elemsIds2Box);
             this.Controls.Add(this.elemsIds2);
             this.Controls.Add(this.elemsIds1Box);
@@ -141,5 +157,6 @@
         private System.Windows.Forms.Button elemsIds1;
         private System.Windows.Forms.TextBox elemsIds2Box;
         private System.Windows.Forms.Button elemsIds2;
+        private System.Windows.Forms.Button buttonClose;
     }
 }

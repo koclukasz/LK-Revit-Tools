@@ -78,6 +78,12 @@ namespace WSPPolska_Tools.Commands
                 // Copy LinkedElementId to clipboard
                 Clipboard.SetText(linkedElement.Id.IntegerValue.ToString());
                 sphereIdBox.Text = pickedRef.LinkedElementId.IntegerValue.ToString();
+
+                //
+                string elemsIds1Parm = linkedElement.LookupParameter("Item1 Ids").AsString();
+                elemsIds1Box.Text = elemsIds1Parm;
+                string elemsIds2Parm = linkedElement.LookupParameter("Item2 Ids").AsString();
+                elemsIds2Box.Text = elemsIds2Parm;
                 // Show confirmation
                 TaskDialog.Show("Selection", $"You selected: {linkedElement.Name}\nID copied to clipboard: {linkedElement.Id.IntegerValue}");
             }
@@ -92,7 +98,6 @@ namespace WSPPolska_Tools.Commands
             string elemsIds1Parm = linkedElement.LookupParameter("Item1 Ids").AsString();
             // Copy LinkedElementId to clipboard
             Clipboard.SetText(elemsIds1Parm);
-            elemsIds1Box.Text = elemsIds1Parm;
         }
 
 
@@ -117,7 +122,11 @@ namespace WSPPolska_Tools.Commands
             string elemsIds2Parm = linkedElement.LookupParameter("Item2 Ids").AsString();
             // Copy LinkedElementId to clipboard
             Clipboard.SetText(elemsIds2Parm);
-            elemsIds2Box.Text = elemsIds2Parm;
+        }
+
+        private void buttonClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
