@@ -17,7 +17,7 @@ namespace WSPPolska_Tools
             BasePoint basePoint = BasePoint.GetProjectBasePoint(doc);
             XYZ basePointPos = basePoint.Position;
             ProjectLocation activeLoc = doc.ActiveProjectLocation;
-
+            int.TryParse(app.Application.VersionNumber, out int revVers);
             try
             {
                 using (Transaction tx = new Transaction(doc, "Change Location"))
@@ -30,7 +30,7 @@ namespace WSPPolska_Tools
                         double EL = newLoc.Value.EL / 0.3048;
                         double angleToNorth = newLoc.Value.Rot;
                         var newPosition = new ProjectPosition(EW, NS, EL, -angleToNorth * (Math.PI / 180));
-                        if (newLoc.Value.ElementId.IntegerValue == -1)
+                        if (CommonM.GetElementIdInteger(revVers, newLoc.Value.ElementId) == -1)
                         {
                             ProjectLocation newLocation = activeLoc.Duplicate(newLoc.Key);
                             newLocation.SetProjectPosition(basePointPos, newPosition);

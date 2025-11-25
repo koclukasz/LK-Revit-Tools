@@ -36,6 +36,7 @@ namespace WSPPolska_Tools.Commands
         private Document doc;
         private UIApplication uiapp;
         private UIDocument uidoc;
+        int revVers;
         Element linkedElement = null;
         public SphereDataForm(ExternalCommandData commandData)
         {
@@ -44,6 +45,7 @@ namespace WSPPolska_Tools.Commands
             uiapp = _commandData.Application;
             uidoc = uiapp.ActiveUIDocument;
             doc = uidoc.Document;
+            int.TryParse(uiapp.Application.VersionNumber, out int revVers);
             InitializeComponent();
         }
 
@@ -76,8 +78,8 @@ namespace WSPPolska_Tools.Commands
                 linkedElement = linkedDoc.GetElement(pickedRef.LinkedElementId);
 
                 // Copy LinkedElementId to clipboard
-                Clipboard.SetText(linkedElement.Id.IntegerValue.ToString());
-                sphereIdBox.Text = pickedRef.LinkedElementId.IntegerValue.ToString();
+                Clipboard.SetText(CommonM.GetElementIdInteger(revVers, linkedElement.Id).ToString());
+                sphereIdBox.Text = CommonM.GetElementIdInteger(revVers, pickedRef.LinkedElementId).ToString();
 
                 //
                 string elemsIds1Parm = linkedElement.LookupParameter("Item1 Ids").AsString();
@@ -85,7 +87,7 @@ namespace WSPPolska_Tools.Commands
                 string elemsIds2Parm = linkedElement.LookupParameter("Item2 Ids").AsString();
                 elemsIds2Box.Text = elemsIds2Parm;
                 // Show confirmation
-                TaskDialog.Show("Selection", $"You selected: {linkedElement.Name}\nID copied to clipboard: {linkedElement.Id.IntegerValue}");
+                TaskDialog.Show("Selection", $"You selected: {linkedElement.Name}\nID copied to clipboard: {CommonM.GetElementIdInteger(revVers, linkedElement.Id)}");
             }
             catch (Autodesk.Revit.Exceptions.OperationCanceledException)
             {

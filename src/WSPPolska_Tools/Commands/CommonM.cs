@@ -34,6 +34,21 @@
             }
         }
 
+        public static int GetElementIdInteger(int revitVersion, ElementId elementId)
+        {
+            //int.TryParse(appVer,out int revitVersion);
+
+            if (revitVersion > 2025)
+            {
+                return elementId.IntegerValue;
+            }
+            else
+            { 
+                return (int)elementId.Value;
+
+            }
+        }
+
         public static Level SearchForLevel(Dictionary<Level, double> levelDictionary, double elevation)
         {
             int levelInd = 0;

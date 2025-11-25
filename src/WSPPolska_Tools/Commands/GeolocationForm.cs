@@ -42,7 +42,8 @@ namespace WSPPolska_Tools
         string disciplineRepl = "";
         int disciplineReplInd;
         string userName;
-       
+        int revVers;
+
 
         //Dictionary<string, NewLocationData> allNewLocations = new Dictionary<string, NewLocationData>();
         public GeolocationForm(ExternalCommandData commandData)
@@ -53,6 +54,7 @@ namespace WSPPolska_Tools
             uidoc = uiapp.ActiveUIDocument;
             doc = uidoc.Document;
             userName = $"_{uiapp.Application.Username}";
+            int.TryParse(_uiapp.Application.VersionNumber, out int revVers);
             InitializeComponent();
             try
             {
@@ -331,8 +333,7 @@ namespace WSPPolska_Tools
 
             foreach (KeyValuePair<string, NewLocationData> loc in allNewLocations)
             {
-                //MessageBox.Show($"{loc.Key} id {loc.Value.ElementId.IntegerValue}");
-                if (loc.Value.ElementId.IntegerValue == -1)
+                if (CommonM.GetElementIdInteger(revVers, loc.Value.ElementId) == -1)
                 {
                     PositionsDataGrid.Rows.Add("NEW", loc.Key, Math.Round(loc.Value.EW, 3), Math.Round(loc.Value.NS, 3), Math.Round(loc.Value.EL, 3), Math.Round(loc.Value.Rot, 3));
                 }

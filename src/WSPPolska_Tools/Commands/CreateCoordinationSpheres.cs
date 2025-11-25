@@ -48,6 +48,7 @@ namespace WSPPolska_Tools
         private UIApplication _uiapp;
         private UIDocument _uidoc;
         string _userName;
+        int revVers;
         private Dictionary<string, FamilySymbol> _typeDict = new Dictionary<string, FamilySymbol>();
         private Dictionary<int, Element> _allCoorSphDict = new Dictionary<int, Element>();
         private Dictionary<string, Workset> _worksetsDic = new Dictionary<string, Workset>();
@@ -62,7 +63,7 @@ namespace WSPPolska_Tools
             _uidoc = _uiapp.ActiveUIDocument;
             _doc = _uidoc.Document;
             _userName = $"_{_uiapp.Application.Username}";
-
+            int.TryParse(_uiapp.Application.VersionNumber, out int revVers);
             InitializeCoordinationSphereData();
             InitializeComponent();
         }
@@ -70,7 +71,7 @@ namespace WSPPolska_Tools
         private void InitializeCoordinationSphereData()
         {
             List<Element> _allCoorSph = new FilteredElementCollector(_doc).OfClass(typeof(FamilyInstance)).Cast<FamilyInstance>().Where(fi => fi.Symbol != null && fi.Symbol.Family != null && fi.Symbol.Family.Name == "XX_GM_CLB_ClashSymbol").Cast<Element>().ToList();
-            _allCoorSphDict = _allCoorSph.ToDictionary(e => e.Id.IntegerValue);
+            _allCoorSphDict = _allCoorSph.ToDictionary(e => CommonM.GetElementIdInteger(revVers, e.Id));
             _typeDict = new FilteredElementCollector(_doc).OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().Where(symbol => symbol.Family != null && symbol.Family.Name == "XX_GM_CLB_ClashSymbol").ToDictionary(symbol => symbol.Name);
             //MessageBox.Show($"{_allCoorSphDict.Count}_{_typeDict.Count}");
             if (_typeDict.Count == 0) { MessageBox.Show("Please load Sphere Family"); }

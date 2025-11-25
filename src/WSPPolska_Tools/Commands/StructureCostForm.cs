@@ -35,6 +35,7 @@ namespace WSPPolska_Tools.Commands
         string fileName;
         string firstLocName;
         string selectedPath;
+        int revVers;
         int concretePrice;
         int reinforcementPrice;
         int structuralSteelPrice;
@@ -54,6 +55,9 @@ namespace WSPPolska_Tools.Commands
             uiapp = _commandData.Application;
             uidoc = uiapp.ActiveUIDocument;
             doc = uidoc.Document;
+            var versionText = uiapp.Application.VersionNumber; // e.g. "2026"
+            int.TryParse(uiapp.Application.VersionNumber, out int revVers);
+            MessageBox.Show(revVers.ToString());
             userName = $"_{uiapp.Application.Username}";
             Excel.Application excelApp = new Excel.Application();
             Excel.Workbook workbook = excelApp.Workbooks.Open("I:\\0030\\TECHNICAL LIBRARY\\SMEP\\01 STRUCTURAL\\17_Kosztorysy\\StructuralUnitPrices.xlsx");
@@ -191,6 +195,7 @@ namespace WSPPolska_Tools.Commands
                 if (double.TryParse(generalReinforcementRatios.Rows[0].Cells[4].Value.ToString(), out double foundationR))
                 {
                     reinfRations["Foundations"] = foundationR;
+                    reinfRations["Foundations Edges"] = foundationR;
                 }
             }
             catch 
@@ -220,17 +225,18 @@ namespace WSPPolska_Tools.Commands
                 { 
                     { "Floors", BuiltInCategory.OST_Floors },
                     { "Foundations", BuiltInCategory.OST_StructuralFoundation },
-                    { "Walls", BuiltInCategory.OST_Walls }
+                    { "Walls", BuiltInCategory.OST_Walls },
+                    { "Foundations Edges", BuiltInCategory.OST_EdgeSlab }
                 };
                 var filteredElementsFI = selectedElements
-                                .Where(element => categoryNamesFI.Values.Any(cat => element.Category.Id.IntegerValue == (int)cat))
+                                .Where(element => categoryNamesFI.Values.Any(cat => CommonM.GetElementIdInteger(revVers, element.Category.Id) == (int)cat))
                                 .ToList();
                 var filteredElementsEl = selectedElements
-                                .Where(element => categoryNamesEl.Values.Any(cat => element.Category.Id.IntegerValue == (int)cat))
+                                .Where(element => categoryNamesEl.Values.Any(cat => CommonM.GetElementIdInteger(revVers, element.Category.Id) == (int)cat))
                                 .ToList();
 
                 var filteredGroups = selectedElements
-                    .Where(element => element.Category.Id.IntegerValue == (int)BuiltInCategory.OST_IOSModelGroups)
+                    .Where(element => CommonM.GetElementIdInteger(revVers, element.Category.Id) == (int)BuiltInCategory.OST_IOSModelGroups)
                     .ToList();
 
 
@@ -242,7 +248,7 @@ namespace WSPPolska_Tools.Commands
 
                 foreach (FamilyInstance element in filteredElementsFI)
                 {
-                    string elCategory = categoryNamesFI.FirstOrDefault(x => (int)x.Value == element.Category.Id.IntegerValue).Key;
+                    string elCategory = categoryNamesFI.FirstOrDefault(x => (int)x.Value == CommonM.GetElementIdInteger(revVers, element.Category.Id)).Key;
                     string elFamily = element.Symbol.Family.Name;
                     string elType = element.Symbol.Name;
                     string elMaterial = element.LookupParameter("WSP_MaterialClass").AsString();
@@ -266,7 +272,7 @@ namespace WSPPolska_Tools.Commands
                 }
                 foreach (Element element in filteredElementsEl)
                 {
-                    string elCategory = categoryNamesEl.FirstOrDefault(x => (int)x.Value == element.Category.Id.IntegerValue).Key;
+                    string elCategory = categoryNamesEl.FirstOrDefault(x => (int)x.Value == CommonM.GetElementIdInteger(revVers, element.Category.Id)).Key;
                     //string elFamily = element.Symbol.Family.Name;
                     string elType = element.Name;
                     string elMaterial = element.LookupParameter("WSP_MaterialClass").AsString();
@@ -316,7 +322,7 @@ namespace WSPPolska_Tools.Commands
                             }
                             catch
                             {
-                                MessageBox.Show($"Element {familyInstance.Id.IntegerValue} cannot be checked for volume");
+                                MessageBox.Show($"Element {CommonM.GetElementIdInteger(revVers, familyInstance.Id)} cannot be checked for volume");
                                 notCalculated.Add(familyInstance.Id);
                             }
                         }
@@ -351,7 +357,7 @@ namespace WSPPolska_Tools.Commands
                             }
                             catch
                             {
-                                MessageBox.Show($"Script cannot find length value for element with Id {familyInstance.Id.IntegerValue}");
+                                MessageBox.Show($"Script cannot find length value for element with Id {CommonM.GetElementIdInteger(revVers, familyInstance.Id)}");
                                 notCalculated.Add(familyInstance.Id);
                             }
                         }
@@ -368,7 +374,7 @@ namespace WSPPolska_Tools.Commands
                         }
                         catch
                         {
-                            MessageBox.Show($"{familyInstances[0].Symbol.Id.IntegerValue.ToString()} type id, WSP_MassPerUnitLength issue.\nProbably the parameter does not exists in family.");
+                            MessageBox.Show($"{CommonM.GetElementIdInteger(revVers, familyInstances[0].Id).ToString()} type id, WSP_MassPerUnitLength issue.\nProbably the parameter does not exists in family.");
                         }
                         totalCost = (unitCost * length);
                         int rowIndex = CostInformationGrid.Rows.Add("ST "+elCategory, elType, elMaterial, volume, kgPerm, length, unitCost, Math.Round(totalCost, 0));
@@ -404,7 +410,7 @@ namespace WSPPolska_Tools.Commands
                         }
                         catch
                         {
-                            MessageBox.Show($"Element {element.Id.IntegerValue} cannot be checked for volume");
+                            MessageBox.Show($"Element {CommonM.GetElementIdInteger(revVers, element.Id)} cannot be checked for volume");
                             notCalculated.Add(element.Id);
                         }
                     }

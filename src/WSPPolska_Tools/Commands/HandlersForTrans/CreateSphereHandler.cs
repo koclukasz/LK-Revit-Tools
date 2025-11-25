@@ -21,6 +21,7 @@ namespace WSPPolska_Tools
 
         public Dictionary<string, FamilySymbol> typeDict { get; set; }
         public Dictionary<int, Element> allCoorSphDict {  get; set; }
+        int revVers;
 
         private XYZ ParseLocation(string input, double ex, double ey, double ez)
         {
@@ -39,6 +40,7 @@ namespace WSPPolska_Tools
 
         {
             Document doc = app.ActiveUIDocument.Document;
+            int.TryParse(app.Application.VersionNumber, out int revVers);
             ICollection<Element> basePoints = new FilteredElementCollector(doc).OfClass(typeof(BasePoint)).ToElements();
             XYZ sharedPosition = null;
             XYZ basePosition = null;
@@ -117,7 +119,7 @@ namespace WSPPolska_Tools
                                     continue;
                                 }
                                 clashElement = doc.Create.NewFamilyInstance(location, symbol, StructuralType.NonStructural);
-                                string clashSphereId = clashElement.Id.IntegerValue.ToString();
+                                string clashSphereId = CommonM.GetElementIdInteger(revVers, clashElement.Id).ToString();
                                 Autodesk.Revit.DB.Parameter worksetParam = clashElement.get_Parameter(BuiltInParameter.ELEM_PARTITION_PARAM);
                                 if (worksetParam != null && !worksetParam.IsReadOnly)
                                 {

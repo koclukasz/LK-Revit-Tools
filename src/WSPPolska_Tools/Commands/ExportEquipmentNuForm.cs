@@ -37,6 +37,7 @@ namespace WSPPolska_Tools
         private Document doc;
         private UIApplication uiapp;
         private UIDocument uidoc;
+        int revVers;
 
         public ExportEquipmentNuForm(ExternalCommandData commandData)
         {
@@ -56,6 +57,7 @@ namespace WSPPolska_Tools
             uiapp = _commandData.Application;
             uidoc = uiapp.ActiveUIDocument;
             doc = uidoc.Document;
+            int.TryParse(_uiapp.Application.VersionNumber, out int revVers);
             if (result == DialogResult.OK)
             {
                 excelApp = new Excel.Application();
@@ -124,7 +126,7 @@ namespace WSPPolska_Tools
                     if (!excelItemsList.Contains(eqNumber) && isMatching)
                     {
                         notInExcel.Add(eqNumber);
-                        notInExcelIds.Add(revMechEquipment.Id.IntegerValue);
+                        notInExcelIds.Add(CommonM.GetElementIdInteger(revVers, revMechEquipment.Id));
                     }
                     else if (!excelItemsList.Contains(eqNumber))
                     {
@@ -192,13 +194,13 @@ namespace WSPPolska_Tools
             int incorrectIndex = lastRowIncorrectNamingNo+1;
             foreach (Element el in notCorrectNaming)
             {
-                if (!existingIds.Contains(el.Id.IntegerValue))
+                if (!existingIds.Contains(CommonM.GetElementIdInteger(revVers, el.Id)))
                 {
                     incorrectNamingSheet.Cells[incorrectIndex, 1].Value = tabList.SelectedItem as string;
                     incorrectNamingSheet.Cells[incorrectIndex, 2].Value = el.LookupParameter(paramNumb).AsString();
                     Range cell = incorrectNamingSheet.Cells[incorrectIndex, 2];
                     cell.Interior.ColorIndex = Excel.XlColorIndex.xlColorIndexNone;
-                    incorrectNamingSheet.Cells[incorrectIndex, 3].Value = el.Id.IntegerValue;
+                    incorrectNamingSheet.Cells[incorrectIndex, 3].Value = CommonM.GetElementIdInteger(revVers, el.Id);
                     incorrectIndex++;
                 }
             }
